@@ -24,7 +24,10 @@ TODO
 ## Usage
 
 You can get the help menu by running:
-
+```
+$ refgenDetector -h
+```
+```
 usage: INFERRING THE REFERENCE GENOME USED TO ALIGN BAM OR CRAM FILE
        [-h] -p PATH -t {BAM/CRAM,Headers} [-m] [-a]
 
