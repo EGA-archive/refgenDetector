@@ -1,14 +1,28 @@
-# Reference genome to be imported into main script
+#!/usr/bin/env python
 
-GRCh37_key = ['chr1']
-GRCh37_value = [249250621]
+""" reference_genome_dictionaries.py: repository with the unique contigs for each reference genome to be inferred"""
 
-GRCh38_key = ['chr1']
-GRCh38_value = [248956422]
+__author__ = "Mireia Marin Ginestar"
+__version__ = "0.1"
+__maintainer__ = "Mireia Marin Ginestar"
+__email__ = "mireia.marin@crg.eu"
+__status__ = "Developement"
 
-t2t_key = ['chr1']
-t2t_value = [248387328]
 
+# MAJOR RELEASES
+hg16={"chr1":246127941}
+hg17={"chr1":245522847}
+hg18={"chr1":247249719}
+GRCh37={"chr1":249250621}
+GRCh38={"chr1":248956422}
+T2T={"chr1":248387328}
+
+# GRCh37 FLAVORS
+hs37d5={"hs37d5":35477943}
+b37={"NC_007605":171823} # this contig is also present in hs37d5, but b37 doesn't include hs37d5 contig
+hg19={"ChrM":16571} # chrM it is shared with hg16, hg17 and hg18
+
+# GRCh38 FLAVORS
 verily_difGRCh38_key =  ['chrUn_KN707610v1_decoy', 'chrUn_KN707611v1_decoy',
                         'chrUn_KN707612v1_decoy', 'chrUn_KN707613v1_decoy', 'chrUn_KN707614v1_decoy',
                         'chrUn_KN707615v1_decoy', 'chrUn_KN707616v1_decoy', 'chrUn_KN707617v1_decoy',
@@ -779,7 +793,6 @@ verily_difGRCh38_key =  ['chrUn_KN707610v1_decoy', 'chrUn_KN707611v1_decoy',
                         'chrUn_JTFH01001990v1_decoy', 'chrUn_JTFH01001991v1_decoy', 'chrUn_JTFH01001992v1_decoy',
                         'chrUn_JTFH01001993v1_decoy', 'chrUn_JTFH01001994v1_decoy', 'chrUn_JTFH01001995v1_decoy',
                         'chrUn_JTFH01001996v1_decoy', 'chrUn_JTFH01001997v1_decoy', 'chrUn_JTFH01001998v1_decoy']
-
 verily_difGRCh38_value = [2200, 3033, 3112, 1642, 1393, 1103, 1039, 1619, 3122, 1934,
                           3111, 2545, 2295, 1551, 2046, 1222, 1535, 3784, 1329, 1238, 5623, 5821, 2960, 1848, 2315,
                           1945, 1424, 1274, 1007, 1414, 1725, 5354, 2189, 1294, 1831, 1647, 2943, 2857, 1030, 1070,
@@ -935,20 +948,6 @@ verily_difGRCh38_value = [2200, 3033, 3112, 1642, 1393, 1103, 1039, 1619, 3122, 
                           2179, 2178, 2178, 2172, 2170, 2167, 2167, 2157, 2153, 2151, 2147, 2142, 2142, 2136, 2130,
                           2128, 2126, 2126, 2119, 2107, 2091, 2087, 2086, 2083, 2075, 2075, 2072, 2068, 2067, 2055,
                           2051, 2050, 2033, 2024, 2016, 2011, 2009, 2003, 2001]
-
-GRCh37 = dict(zip(GRCh37_key, GRCh37_value))  # dictionary for GRCh37 version
-GRCh38 = dict(zip(GRCh38_key, GRCh38_value))  # dictionary of the 24 chromosomes of GRCh38 version
-t2t = dict(zip(t2t_key, t2t_value))  # dictionary for the T2T version
-GRCh38_family = set([248956422]) # length chromosome 1 in GRCh38 family
-
 verily_difGRCh38 = dict(zip(verily_difGRCh38_key, verily_difGRCh38_value))  # dictionary with the contigs present in verily GRCh38 but not in GRCh38
 
-set_hs37d5 = set([35477943])  # contig hs37d5, only present in b37+decoy/hs37d5
-set_b37 = set([171823])  # contig NC_007605, only present in b37
-set_hg38 = set([188315]) #contig unique in hg38 chr10_KI270825v1_alt
 
-set_hg16 = set([246127941])  # lenghts chr 1
-set_hg17 = set([245522847])
-set_hg18 = set([247249719])
-
-set_hg19 = set([16571])  # lenght chrM, it is shared with hg16, hg17 and hg18
