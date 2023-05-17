@@ -45,7 +45,7 @@ def comparison(dict_SN_LN, target_file):
                         break # the loop stops. If it continues all hs37d5 will also be identified as b37,
                         # as both contain NC_007605
                 if match_flavor: #if a flavor is inferred, print it
-                    print(target_file, match_flavor[1])
+                    print(f"{target_file}, {match_flavor[1]}")
                 else: #if there arent matches with the flavors, prints the major release
                     print(f"{target_file}, GRCh37")
             elif family[1]=="GRCh38": #if GRCh38 is detected
