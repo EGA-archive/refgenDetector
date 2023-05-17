@@ -56,7 +56,7 @@ def comparison(dict_SN_LN, target_file):
                     #checks any of the Verily's contigs is present
                     print(f"{target_file}, Verily's GRCh38")
                 else: #if there arent unique contig, the major release is printed
-                    print(f"{target_file}, {family[1]})
+                    print(f"{target_file}, {family[1]}")
             else: #prints the major release if there isnt any flavor
                 print(f"{target_file}, {family[1]}")
 
