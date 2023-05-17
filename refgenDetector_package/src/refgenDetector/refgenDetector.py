@@ -47,18 +47,18 @@ def comparison(dict_SN_LN, target_file):
                 if match_flavor: #if a flavor is inferred, print it
                     print(target_file, match_flavor[1])
                 else: #if there arent matches with the flavors, prints the major release
-                    print(target_file, "GRCh37")
+                    print(f"{target_file}, GRCh37")
             elif family[1]=="GRCh38": #if GRCh38 is detected
                 if len({key for key in dict_SN_LN.keys() if "HLA-" in key}) != 0: #check the SN field (contigs name)
                     # match the HLA nomenclature
                     print(f"{target_file}, hs38DH_extra")
                 elif intersection_targetfile_referencerepo(dict_SN_LN, [verily_difGRCh38, "Verily's GRCh38"]):
                     #checks any of the Verily's contigs is present
-                    print(target_file, "Verily's GRCh38")
+                    print(f"{target_file}, Verily's GRCh38")
                 else: #if there arent unique contig, the major release is printed
-                    print(target_file, family[1])
+                    print(f"{target_file}, {family[1]})
             else: #prints the major release if there isnt any flavor
-                print(target_file, family[1])
+                print(f"{target_file}, {family[1]}")
 
 def get_info_txt(header_txt, md5, assembly):
     """
