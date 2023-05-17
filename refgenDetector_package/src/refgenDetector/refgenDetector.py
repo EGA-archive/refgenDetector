@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+
+""" refgenDetector.py: Script to infer the reference genome used to create a BAM or CRAM"""
+
+__author__ = "Mireia Marin Ginestar"
+__version__ = "0.1"
+__maintainer__ = "Mireia Marin Ginestar"
+__email__ = "mireia.marin@crg.eu"
+__status__ = "Developement"
+
 from refgenDetector.reference_genome_dictionaries import GRCh38, GRCh37, hs37d5, hg16, hg17, hg18, hg19, \
     b37, verily_difGRCh38, T2T
 import argparse
