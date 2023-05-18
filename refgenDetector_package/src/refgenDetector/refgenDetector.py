@@ -8,7 +8,7 @@ __maintainer__ = "Mireia Marin Ginestar"
 __email__ = "mireia.marin@crg.eu"
 __status__ = "Developement"
 
-from refgenDetector.reference_genome_dictionaries import GRCh38, GRCh37, hs37d5, hg16, hg17, hg18, hg19, \
+from reference_genome_dictionaries import GRCh38, GRCh37, hs37d5, hg16, hg17, hg18, hg19, \
     b37, verily_difGRCh38, T2T
 import argparse
 import logging
@@ -31,34 +31,39 @@ def comparison(dict_SN_LN, target_file):
     First, it defines the major release to which the header belongs to. Then, checks if theres any match with the
     flavors.
     """
-    major_releases=[[hg16, "hg16"], [hg17, "hg17"], [hg18,"hg18"], [GRCh37, "GRCh37"], [GRCh38,"GRCh38"], [T2T, "T2T"]]
+    major_releases=[[hg16, "hg16"], [hg17, "hg17"], [hg18,"hg18"], [GRCh37, "GRCh37"], [GRCh38,"GRCh38"], [T2T,
+                                                                                                             "T2T"]]
     # list of the major releases that the script can identify
-    GRCh37_flavors=[[hs37d5, "hs37d5"], [b37,"b37"], [hg19, "hg19"]]
+    flavors=[[hs37d5, "hs37d5"], [b37,"b37"], [hg19, "hg19"]]
     # list of the GRCh37 flavors that the script caon identify
+    major_release_list = []
     for refgen in major_releases: #infer the major release family
-        family = intersection_targetfile_referencerepo(dict_SN_LN,refgen)
-        if family: #when the family is detected
-            if family[1] == "GRCh37": #if it belongs to GRCh37
-                for flavor in GRCh37_flavors: #try to infer a flavor
-                    match_flavor = intersection_targetfile_referencerepo(dict_SN_LN, flavor)
-                    if match_flavor: #if a GRCh37 flavor is detected
-                        break # the loop stops. If it continues all hs37d5 will also be identified as b37,
-                        # as both contain NC_007605
-                if match_flavor: #if a flavor is inferred, print it
-                    print(f"{target_file}, {match_flavor[1]}")
-                else: #if there arent matches with the flavors, prints the major release
-                    print(f"{target_file}, GRCh37")
-            elif family[1]=="GRCh38": #if GRCh38 is detected
-                if len({key for key in dict_SN_LN.keys() if "HLA-" in key}) != 0: #check the SN field (contigs name)
-                    # match the HLA nomenclature
-                    print(f"{target_file}, hs38DH_extra")
-                elif intersection_targetfile_referencerepo(dict_SN_LN, [verily_difGRCh38, "Verily's GRCh38"]):
-                    #checks any of the Verily's contigs is present
-                    print(f"{target_file}, Verily's GRCh38")
-                else: #if there arent unique contig, the major release is printed
-                    print(f"{target_file}, {family[1]}")
-            else: #prints the major release if there isnt any flavor
-                print(f"{target_file}, {family[1]}")
+        major_release_list.append(intersection_targetfile_referencerepo(dict_SN_LN,refgen))
+    family = [ref for ref in major_release_list if ref is not None] # deletes all the Nones and gets the family of
+    # the header
+    if len(family)==0: #if there wasnt any positive results, no reference genome can be inferred
+        print("The reference genome can't be inferred")
+    elif family[0][1] == "GRCh37": #if the header belongs to GRCh37 family
+        for flav in flavors: #checks GRCH37 flavors
+            match_flavor = intersection_targetfile_referencerepo(dict_SN_LN, flav)
+            if match_flavor:  # if a GRCh37 flavor is detected
+                break  # the loop stops. If it continues all hs37d5 will also be identified as b37,
+                # as both contain NC_007605
+        if match_flavor:  # if a flavor is inferred, print it
+            print(f"{target_file}, {match_flavor[1]}")
+        else:  # if there arent matches with the flavors, prints the major release
+            print(f"{target_file},{family[0][1]}")
+    elif family[0][1] =="GRCh38": # if the header belongs to GRCh38 family
+        if len({key for key in dict_SN_LN.keys() if "HLA-" in key}) != 0:  # check the SN field (contigs name)
+            # match the HLA nomenclature
+            print(f"{target_file}, hs38DH_extra")
+        elif intersection_targetfile_referencerepo(dict_SN_LN, [verily_difGRCh38, "Verily's GRCh38"]):
+            # checks any of the Verily's contigs is present
+            print(f"{target_file}, Verily's GRCh38")
+        else:  # if there arent unique contig, the major release is printed
+            print(f"{target_file}, {family[1]}")
+    else: #Prints the family (with no flavors) the headers belong to
+        print(f"{target_file},{family[0][1]}")
 
 def get_info_txt(header_txt, md5, assembly):
     """
