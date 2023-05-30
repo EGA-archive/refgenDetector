@@ -150,7 +150,7 @@ def process_data_txt(target_file, md5, assembly):
                     # utf-8 encoding
                     get_info_txt(header_txt, md5, assembly)
     except: #if the file is not a txt it breaks
-        print("Please, check you are using the correct --type")
+        print("Please, check you are using the correct --type or that the path to the header is correct")
         return # the txts in --path will be analyzed and the incorrect formats will be skipped
 
 def main():
