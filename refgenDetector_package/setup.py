@@ -17,7 +17,7 @@ setup(
         "Operating System :: Unix"],
     entry_points={
         'console_scripts': [
-            'refgenDetector=refgenDetector.refgenDetector:main',
+            'refgenDetector=refgenDetector.refgenDetector_main:main',
         ],
     },
     packages=find_packages(where='src'),
