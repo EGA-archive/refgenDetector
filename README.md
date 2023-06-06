@@ -60,7 +60,7 @@ In the folder **examples** you can find headers, BAM and CRAMs to test the worki
 
 *All this files belong to the [synthetics data cohort](https://ega-archive.org/synthetic-data) from the European Genome-Phenome Archive ([EGA](https://ega-archive.org/).*
 
-       ### Test with headers in a TXT
+   ### Test with headers in a TXT
 
 In the folder TEST_HEADERS there are four headers obtained from synthetic BAM an CRAMs stored in the EGA. Each one of them belongs to a different synthetic study:
 - Test Study for EGA using data from 1000 Genomes Project - Phase 3 [EGAS00001005042](https://ega-archive.org/studies/EGAS00001005042).
@@ -78,7 +78,7 @@ To run RefgenDetector with the files:
 TODO
 ``
 
-       ### Test with BAM and CRAMs
+   ### Test with BAM and CRAMs
 
 In the folder TEST_BAM_CRAM there are a BAM and a CRAM obtained from synthetic BAM an CRAMs stored in the EGA. They belong to the synthetic study - Test Study for EGA using data from 1000 Genomes Project - Phase 3 [EGAS00001005042](https://ega-archive.org/studies/EGAS00001005042).
 
