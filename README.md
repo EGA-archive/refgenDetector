@@ -54,6 +54,43 @@ In the file (```-p argument```) path you should add the paths to all the files y
 
 All the files included in this argument must be the same type, meaning, you should run RefgenDetector to analyze only BAM/CRAMs or only headers. 
 
+## Test RefgenDetector
+
+In the folder **examples** you can find headers, BAM and CRAMs to test the working of RefgenDetector. 
+
+*All this files belong to the [synthetics data cohort from the European Genome-Phenome Archive (EGA)](https://ega-archive.org/synthetic-data).*
+
+# Test with headers in a TXT
+
+In the folder TEST_HEADERS there are four headers obtained from synthetic BAM an CRAMs stored in the European 
+Genome-Phenome Archive (EGA). 
+
+Further information about them can be found in the file *where_to_find_this_files.txt*, saved in the same folder.
+
+To run RefgenDetector with the files: 
+
+1. Modify the txt *path_to_headers* so the paths match those in your computer. 
+2. Run:
+``
+TODO
+``
+
+# Test with BAM and CRAMs
+
+In the folder TEST_BAM_CRAM there are a BAM and a CRAM obtained from the synthetic data stored in the 
+European 
+Genome-Phenome Archive (EGA). 
+
+Further information about them can be found in the file *where_to_find_this_files.txt*, saved in the same folder.
+
+To run RefgenDetector with the files: 
+
+1. Modify the txt *path_to_bam_cram* so the paths match those in your computer. 
+2. Run:
+``
+TODO
+``
+
 ## Licence and funding
 
 RefgenDetector is released under GNU General Public License v3.0. 
