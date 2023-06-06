@@ -95,4 +95,5 @@ TODO
 ## Licence and funding
 
 RefgenDetector is released under GNU General Public License v3.0. 
+
 It was funded by ELIXIR, the research infrastructure for life-science data (ELIXIR Beacon Implementation Studies 2019-2021 and 2022-2023).
