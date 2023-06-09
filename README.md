@@ -54,7 +54,46 @@ In the file (```-p argument```) path you should add the paths to all the files y
 
 All the files included in this argument must be the same type, meaning, you should run RefgenDetector to analyze only BAM/CRAMs or only headers. 
 
+## Test RefgenDetector
+
+In the folder **examples** you can find headers, BAM and CRAMs to test the working of RefgenDetector. 
+
+*All this files belong to the [synthetics data cohort](https://ega-archive.org/synthetic-data) from the European Genome-Phenome Archive ([EGA](https://ega-archive.org/).*
+
+### Test with headers in a TXT
+
+In the folder TEST_HEADERS there are four headers obtained from synthetic BAM an CRAMs stored in the EGA. Each one of them belongs to a different synthetic study:
+- Test Study for EGA using data from 1000 Genomes Project - Phase 3 [EGAS00001005042](https://ega-archive.org/studies/EGAS00001005042).
+- Synthetic data - Genome in a Bottle - [EGAS00001005591](https://ega-archive.org/studies/EGAS00001005591).
+- Human genomic and phenotypic synthetic data for the study of rare diseases - [EGAS00001005702](https://ega-archive.org/studies/EGAS00001005702).
+- CINECA synthetic data.Please note: This study contains synthetic data (with cohort “participants” / ”subjects” marked with FAKE) has no identifiable data and cannot be used to make any inference about cohort data or results - [EGAS00001002472](https://ega-archive.org/studies/EGAS00001002472).
+
+Further information about them can be found in the file *where_to_find_this_files.txt*, saved in the same folder.
+
+To run RefgenDetector with the files: 
+
+1. Modify the txt *path_to_headers* so the paths match those in your computer. 
+2. Run:
+``
+TODO
+``
+
+### Test with BAM and CRAMs
+
+In the folder TEST_BAM_CRAM there are a BAM and a CRAM obtained from synthetic BAM an CRAMs stored in the EGA. They belong to the synthetic study - Test Study for EGA using data from 1000 Genomes Project - Phase 3 [EGAS00001005042](https://ega-archive.org/studies/EGAS00001005042).
+
+Further information about them can be found in the file *where_to_find_this_files.txt*, saved in the same folder.
+
+To run RefgenDetector with the files: 
+
+1. Modify the txt *path_to_bam_cram* so the paths match those in your computer. 
+2. Run:
+``
+TODO
+``
+
 ## Licence and funding
 
 RefgenDetector is released under GNU General Public License v3.0. 
+
 It was funded by ELIXIR, the research infrastructure for life-science data (ELIXIR Beacon Implementation Studies 2019-2021 and 2022-2023).
