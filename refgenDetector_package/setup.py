@@ -10,7 +10,7 @@ setup(
     author="Mireia Marin Ginestar",
     author_email="<mireia.marin@crg.eu>",
     description=DESCRIPTION,
-    install_requires=['argparse', 'pysam'],
+    install_requires=['argparse', 'pysam', 'gzip'],
     keywords=['python'],
     classifiers=[
         "Programming Language :: Python :: 3",
