@@ -1,0 +1,2 @@
+/home/mireia/Bioinfo/refgenDetectorCLONE/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam, hs38DH_extra
+/home/mireia/Bioinfo/refgenDetectorCLONE/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.cram, hs38DH_extra
