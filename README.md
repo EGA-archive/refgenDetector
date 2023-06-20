@@ -54,7 +54,13 @@ Depending on how you want to isntall the package:
    PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00005572695.gz, hs37d5
    PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00007462306, hs38DH_extra
 
+### From pypi
 
+TODO
+
+### Docker
+
+TODO
 
 ## Usage
 
