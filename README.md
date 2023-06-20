@@ -48,7 +48,6 @@ Depending on how you want to isntall the package:
 
    Check your installation has been successful by checking the test results are correct:
    
-   $ refgenDetector -p /home/mireia/refgenDetector_pip-masters/examples/path_to_headers -t Headers
    PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00001753746, b37
    PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00005469864, hg19
    PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00005572695.gz, hs37d5
