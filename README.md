@@ -19,11 +19,12 @@ RefgenDetector is able to infer the following reference genomes:
 
 ## Requirements
 
-Python 3.10.6
+- Python 3.10.6
 
 Depending on how you want to isntall the package: 
-       pip 23.1.2 
-       Docker version 24.0.2
+
+- pip 23.1.2 
+- Docker version 24.0.2
        
 ## Installation 
 
