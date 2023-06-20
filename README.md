@@ -17,9 +17,38 @@ RefgenDetector is able to infer the following reference genomes:
 - hs38DH_extra
 - T2T
 
+## Requirements
+
+Python 3.10.6
+
+Depending on how you want to isntall the package: 
+       pip 23.1.2 
+       Docker version 24.0.2
+       
 ## Installation 
 
-TODO 
+### Cloning this repository 
+
+*Works on Linux system*
+
+1. Clone this respository
+2. ``` $ cd PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/refgenDetector_package ```
+3. pip install .
+4. ``` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORYrefgenDetector_pip-masters/examples/path_to_bam_cram -t BAM/CRAM ```
+
+   Check your installation has been successful by checking the test results are correct:
+   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam, hs38DH_extra
+   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.cram, hs38DH_extra
+6. ``` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/examples/path_to_headers -t Headers ```
+
+   Check your installation has been successful by checking the test results are correct:
+   $ refgenDetector -p /home/mireia/refgenDetector_pip-masters/examples/path_to_headers -t Headers
+   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00001753746, b37
+   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00005469864, hg19
+   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00005572695.gz, hs37d5
+   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00007462306, hs38DH_extra
+
+
 
 ## Usage
 
