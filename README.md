@@ -34,11 +34,11 @@ Depending on how you want to isntall the package:
 
 1. Clone this respository
    
-2. ``` $ cd PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/refgenDetector_package ```
+2. ``` $ cd PATH_WHERE_YOU_CLONED_THE_REPOSITORY ```
    
 3. ```$ pip install . ```
    
-4. ``` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORYrefgenDetector_pip-masters/examples/path_to_bam_cram -t BAM/CRAM ```
+4. ``` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORYrefgenDetector_pip-master/examples/path_to_bam_cram -t BAM/CRAM ```
 
    Check your installation has been successful by checking the test results are correct:
    
