@@ -1,4 +1,4 @@
-/home/mireia/Bioinfo/refgenDetectorCLONE/examples/TEST_HEADERS/EGAF00001753746, b37
-/home/mireia/Bioinfo/refgenDetectorCLONE/examples/TEST_HEADERS/EGAF00005469864, hg19
-/home/mireia/Bioinfo/refgenDetectorCLONE/examples/TEST_HEADERS/EGAF00005572695.gz, hs37d5
-/home/mireia/Bioinfo/refgenDetectorCLONE/examples/TEST_HEADERS/EGAF00007462306, hs38DH_extra
+EGAF00001753746, b37
+EGAF00005469864, hg19
+EGAF00005572695.gz, hs37d5
+EGAF00007462306, hs38DH_extra
