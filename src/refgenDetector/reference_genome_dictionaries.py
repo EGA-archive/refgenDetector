@@ -3,7 +3,7 @@
 """ reference_genome_dictionaries.py: repository with the unique contigs for each reference genome to be inferred"""
 
 __author__ = "Mireia Marin Ginestar"
-__version__ = "0.1"
+__version__ = "1.0"
 __maintainer__ = "Mireia Marin Ginestar"
 __email__ = "mireia.marin@crg.eu"
 __status__ = "Developement"

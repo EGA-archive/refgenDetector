@@ -1,6 +1,10 @@
 from setuptools import setup, find_packages
+# read the contents of your README file
+from pathlib import Path
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
-VERSION = '0.0.1'
+VERSION = '1.0.0'
 DESCRIPTION = 'refgenDetector'
 
 # Setting up
@@ -10,6 +14,8 @@ setup(
     author="Mireia Marin Ginestar",
     author_email="<mireia.marin@crg.eu>",
     description=DESCRIPTION,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     install_requires=['argparse', 'pysam'],
     keywords=['python'],
     classifiers=[

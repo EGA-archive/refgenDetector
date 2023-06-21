@@ -3,7 +3,7 @@
 """ refgenDetector.py: Script to infer the reference genome used to create a BAM or CRAM"""
 
 __author__ = "Mireia Marin Ginestar"
-__version__ = "0.1"
+__version__ = "1.0"
 __maintainer__ = "Mireia Marin Ginestar"
 __email__ = "mireia.marin@crg.eu"
 __status__ = "Developement"
