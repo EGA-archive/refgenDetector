@@ -94,7 +94,7 @@ BAM/CRAMs or only headers.
 In the folder **examples** you can find headers, BAM and CRAMs to test the working of RefgenDetector.
 
 *All this files belong to the [synthetics data cohort](https://ega-archive.org/synthetic-data) from the European
-Genome-Phenome Archive ([EGA](https://ega-archive.org/).*
+Genome-Phenome Archive ([EGA](https://ega-archive.org/)).*
 
 ### Test with headers in a TXT
 
