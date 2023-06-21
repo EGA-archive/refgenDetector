@@ -33,9 +33,9 @@ Depending on how you want to isntall the package:
 
 ## Installation
 
-### Cloning this repository
-
 *Works on Linux system*
+
+### Cloning this repository
 
 1. Clone this respository
 
