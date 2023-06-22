@@ -1,6 +1,6 @@
 # EGA - RefgenDetector
 
-RefgenDetector is a python tool that inferes the reference genome assembly used during the read alignment for BAM and
+RefgenDetector is a python tool that infers the reference genome assembly used during the read alignment for BAM and
 CRAM files. The proposed tool is designed to facilitate the analysis of genomic data with incomplete metadata
 annotation. RefgenDetector can differentiate between major human reference genome releases, as well as commonly used
 flavors, by utilizing the LN and SN mandatory fields in the BAM and CRAM headers. The tool includes dictionaries with
@@ -26,7 +26,7 @@ RefgenDetector is able to infer the following reference genomes:
 
 - Python 3.10.6
 
-Depending on how you want to isntall the package:
+Depending on how you want to install the package:
 
 - pip 23.1.2
 - Docker version 24.0.2
@@ -37,7 +37,7 @@ Depending on how you want to isntall the package:
 
 ### Cloning this repository
 
-1. Clone this respository
+1. Clone this repository
 
 2. ``` $ cd PATH_WHERE_YOU_CLONED_THE_REPOSITORY/src/refgenDetector ```
 
@@ -49,7 +49,7 @@ Depending on how you want to isntall the package:
 
 ### Docker
 
-TODO
+All the instructions to run refgenDetector in a Docker container can be found [here](https://hub.docker.com/r/beacon2ri/refgendetector). 
 
 ## Usage
 
@@ -82,7 +82,7 @@ options:
 
 ```
 
-In the main file (```-p argument```) you should add the paths to all the files you want to analyze. RefgenDetector 
+In the main file (```-p argument```) you should add the paths to all the files you want to analyze. RefgenDetector
 works with complete BAM and CRAMs and with txt files containing only the headers. The txt can be uncompressed, gzip
 compressed, and with encodings utf-8 and iso-8859-1.
 
@@ -137,17 +137,17 @@ Further information about them can be found in the file *where_to_find_this_file
 To run RefgenDetector with the files:
 
 1. Modify the txt *path_to_bam_cram* so the paths match those in your computer.
-   2. Run:
+    2. Run:
 
-      `` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/examples/path_to_bam_cram 
-         -t BAM/CRAM ``
-  
-      Check your installation has been successful by checking the test results are correct:
-   
-      PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam, hs38DH_extra
-      PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.
-      10000-10100__21.5000000-5050000.cram, hs38DH_extra
+       `` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/examples/path_to_bam_cram
+       -t BAM/CRAM ``
 
+       Check your installation has been successful by checking the test results are correct:
+
+       PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam,
+       hs38DH_extra
+       PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.
+       10000-10100__21.5000000-5050000.cram, hs38DH_extra
 
 ## Licence and funding
 
