@@ -45,6 +45,8 @@ Depending on how you want to install the package:
 
 ### From pypi
 
+All the information can be found (here)[https://pypi.org/project/refgenDetector/]
+
 ``$ pip install refgenDetector``
 
 ### Docker
