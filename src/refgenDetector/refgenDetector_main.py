@@ -84,7 +84,7 @@ def get_info_txt(header_txt, md5, assembly):
         dict_assembly = [l for line in dict_SQ for l in line if "AS" in l][:1]  # it saves the first AS field of the
         # header
         if dict_assembly:  # if AS is present in the header
-            print(f"*** {header_txt.name}, {header_txt[0]}")  # prints the value
+            print(f"*** {header_txt.name}, {dict_assembly}")  # prints the value
     # if present and asked prints md5
     if md5:  # if the md5 argument is selected by the user
         for i in dict_SQ[0]: # checks in the first line if the M5 field is present
