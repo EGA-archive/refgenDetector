@@ -137,17 +137,14 @@ Further information about them can be found in the file *where_to_find_this_file
 To run RefgenDetector with the files:
 
 1. Modify the txt *path_to_bam_cram* so the paths match those in your computer.
-    2. Run:
 
-       `` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/examples/path_to_bam_cram
-       -t BAM/CRAM ``
+2. Run:
+`` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/examples/path_to_bam_cram-t BAM/CRAM ``
 
-       Check your installation has been successful by checking the test results are correct:
+Check your installation has been successful by checking the test results are correct:
 
-       PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam,
-       hs38DH_extra
-       PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.
-       10000-10100__21.5000000-5050000.cram, hs38DH_extra
+PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam, hs38DH_extra
+PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.cram, hs38DH_extra
 
 ## Licence and funding
 
