@@ -33,8 +33,6 @@ Depending on how you want to install the package:
 
 ## Installation
 
-*Works on Linux system*
-
 ### Cloning this repository
 
 1. Clone this repository
