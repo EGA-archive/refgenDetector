@@ -33,6 +33,8 @@ Depending on how you want to install the package:
 
 ## Installation
 
+To install refgenDetector you can choose any of these methods:
+
 ### Cloning this repository
 
 1. Clone this repository
@@ -47,7 +49,7 @@ All the information can be found [here](https://pypi.org/project/refgenDetector/
 
 ``$ pip install refgenDetector``
 
-### Docker
+### From Docker
 
 All the instructions to run refgenDetector in a Docker container can be found [here](https://hub.docker.com/r/beacon2ri/refgendetector). 
 
