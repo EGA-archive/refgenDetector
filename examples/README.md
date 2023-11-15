@@ -11,7 +11,7 @@ To run RefgenDetector with the files:
 
 1. Modify the txt *path_to_headers* so the paths match those in your computer. 
 2. Run:
-´$ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector/examples/path_to_headers -t Headers´
+´´$ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector/examples/path_to_headers -t Headers´´
 
 Check your installation has been successful by checking the test results are correct:
 
