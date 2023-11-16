@@ -1,11 +1,7 @@
 # EGA - RefgenDetector
 
-RefgenDetector is a python tool that infers the reference genome assembly used during the read alignment for BAM and
-CRAM files. The proposed tool is designed to facilitate the analysis of genomic data with incomplete metadata
-annotation. RefgenDetector can differentiate between major human reference genome releases, as well as commonly used
-flavors, by utilizing the LN and SN mandatory fields in the BAM and CRAM headers. The tool includes dictionaries with
-information on contig names and lengths, enabling it to accurately identify unique contigs and differentiate between
-different flavors of the reference genome.
+RefgenDetector is a python tool that infers the reference genome assembly used during the read alignment for SAM, BAM and CRAM files. The proposed tool is designed to facilitate the analysis of genomic data with incomplete metadata
+annotation. RefgenDetector can differentiate between major human reference genome releases, as well as commonly used flavors (derivative releases based on the major releases), by utilizing the LN and SN mandatory fields in the alignment files headers. The tool includes dictionaries with information on contig names and lengths, enabling it to accurately identify unique contigs and differentiate between different flavors of the reference genome.
 
 ## Description
 
@@ -85,7 +81,7 @@ options:
 ```
 
 In the main file (```-p argument```) you should add the paths to all the files you want to analyze. RefgenDetector
-works with complete BAM and CRAMs and with txt files containing only the headers. The txt can be uncompressed, gzip
+works with complete SAM, BAM and CRAMs and with text files containing only the headers. The text can be uncompressed, gzip
 compressed, and with encodings utf-8 and iso-8859-1.
 
 All the files included in this argument must be the same type, meaning, you should run RefgenDetector to analyze only
@@ -93,14 +89,14 @@ BAM/CRAMs or only headers.
 
 ## Test RefgenDetector
 
-In the folder **examples** you can find headers, BAM and CRAMs to test the working of RefgenDetector.
+In the folder **examples** you can find headers, BAM and CRAMs to test the performance of RefgenDetector.
 
 *All this files belong to the [synthetics data cohort](https://ega-archive.org/synthetic-data) from the European
 Genome-Phenome Archive ([EGA](https://ega-archive.org/)).*
 
 ### Test with headers in a TXT
 
-In the folder TEST_HEADERS there are four headers obtained from synthetic BAM an CRAMs stored in the EGA. Each one of
+In the folder Test_headers there are four headers obtained from synthetic BAM an CRAMs stored in the EGA. Each one of
 them belongs to a different synthetic study:
 
 - Test Study for EGA using data from 1000 Genomes Project - Phase
@@ -130,7 +126,7 @@ To run RefgenDetector with the files:
 
 ### Test with BAM and CRAMs
 
-In the folder TEST_BAM_CRAM there are a BAM and a CRAM obtained from synthetic BAM an CRAMs stored in the EGA. They
+In the folder Test_bam_cram there are synthetic BAM an CRAMs stored in the EGA. They
 belong to the synthetic study - Test Study for EGA using data from 1000 Genomes Project - Phase
 3 [EGAS00001005042](https://ega-archive.org/studies/EGAS00001005042).
 
