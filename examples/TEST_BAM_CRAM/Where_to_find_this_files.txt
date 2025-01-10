@@ -1,0 +1,6 @@
+These BAM and CRAM were downloaded from the synthetic data stored at the European Genome-Phenome Archive
+
+https://ega-archive.org/synthetic-data
+
+EGAD00001009826 -- EGAF00007243773 -- HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam
+EGAD00001009826 -- EGAF00007243774 -- HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.cram

@@ -1,0 +1,2 @@
+[console_scripts]
+refgenDetector = refgenDetector.refgenDetector_main:main

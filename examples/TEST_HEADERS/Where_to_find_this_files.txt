@@ -1,0 +1,8 @@
+These headers were extracted from the synthetic data stored at the European Genome-Phenome Archive
+
+https://ega-archive.org/synthetic-data
+
+EGAS00001005042 -- EGAF00001753746
+EGAS00001005591 -- EGAF00005469864
+EGAS00001005702 -- EGAF00005572695
+EGAS00001002472 -- EGAF00007462306
