@@ -6,7 +6,7 @@ RefgenDetector is a bioinformatics tool that infers the reference genome assembl
 
 RefgenDetector is able to infer the following reference genomes:
 
-*Primates*
+**Primates**
 
 🧬 Homo sapiens
 
@@ -28,36 +28,36 @@ RefgenDetector is able to infer the following reference genomes:
 - rheMac8
 - rheMac3
 
-*Rodents*
+**Rodents**
 
 🐭 Mus musculus
 
--mm7
--mm8
--mm9
--mm10
--mm39
+- mm7
+- mm8
+- mm9
+- mm10
+- mm39
 
 🐀 Rattus norvegicus
 
 - mRatBN7_2
 - Rnor_6_0
 
-*Other Mammals*
+**Other Mammals**
 
 🐷 Sus scrofa
 
 - Sscrofa10_2
 - Sscrofa11_1
 
-*Vertebrates (Non-Mammalian)*
+**Vertebrates (Non-Mammalian)**
 
 🐟 Danio Rerio
 
 - danRer10
 - danRer11
 
-*Invertebrates*
+**Invertebrates**
 
 🦟 Drosophila Melanogaster
 
@@ -69,7 +69,7 @@ RefgenDetector is able to infer the following reference genomes:
 - WBcel215
 - WBcel235
 
-*Microorganisms & Plants*
+**Microorganisms & Plants**
 
 🧫 Escherichia coli
 
