@@ -193,8 +193,8 @@ To run RefgenDetector with the files:
 
 2. Run:
 
-       `` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/examples/path_to_bam_cram
-       -t BAM/CRAM ``
+    ``` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/examples/path_to_bam_cram
+    -t BAM/CRAM ```
 
 
 ## Licence and funding
