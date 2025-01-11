@@ -1,26 +1,59 @@
 # EGA - RefgenDetector
 
-RefgenDetector is a python tool that infers the reference genome assembly used during the read alignment for BAM and
-CRAM files. The proposed tool is designed to facilitate the analysis of genomic data with incomplete metadata
-annotation. RefgenDetector can differentiate between major human reference genome releases, as well as commonly used
-flavors, by utilizing the LN and SN mandatory fields in the BAM and CRAM headers. The tool includes dictionaries with
-information on contig names and lengths, enabling it to accurately identify unique contigs and differentiate between
-different flavors of the reference genome.
+RefgenDetector is a bioinformatics tool that infers the reference genome assembly used during read alignment by analyzing file headers. It identifies major genome releases and derived assemblies across humans and multiple other species by analyzing contig names and lengths. Benchmarking against 94 synthetic datasets achieved a 100% accuracy rate, while large-scale testing on 918,404 real-world files demonstrated 97.13% correctness, failing only when files’ headers are incomplete.
 
 ## Description
 
 RefgenDetector is able to infer the following reference genomes:
 
-- NCBI35/hg17
-- NCBI36.1/hg18
-- GRCh37
-- hg19
-- b37
-- hs37d5
-- GRCh38
-- Verily's GRCh38
-- hs38DH_extra
-- T2T
+*Primates*
+🧬 Homo sapiens
+-hg16
+-hg17
+-hg18
+-GRCh37
+-GRCh38
+-T2T
+🐒 Pan troglodytes
+- pantro3_0
+- Pan_troglodytes-2.1
+🐵 Macaca mulatta
+- Mmul10
+- rheMac8
+- rheMac3
+*Rodents*
+🐭 Mus musculus
+-mm7
+-mm8
+-mm9
+-mm10
+-mm39
+🐀 Rattus norvegicus
+- mRatBN7_2
+- Rnor_6_0
+*Other Mammals*
+🐷 Sus scrofa
+- Sscrofa10_2
+- Sscrofa11_1
+*Vertebrates (Non-Mammalian)*
+🐟 Danio Rerio
+- danRer10
+- danRer11
+*Invertebrates*
+🦟 Drosophila Melanogaster
+- dm5
+- dm6
+🐛 Caenorhabditis elegans
+- WBcel215
+- WBcel235
+*Microorganisms & Plants*
+🧫 Escherichia coli
+- ASM886v2
+-ASM584v2
+🌱 Arabidopsis thaliana
+- TAIR
+🍺 Saccharomyces cerevisiae
+- R64
 
 ## Requirements
 
@@ -28,12 +61,10 @@ RefgenDetector is able to infer the following reference genomes:
 
 Depending on how you want to install the package:
 
-- pip 23.1.2
-- Docker version 24.0.2
+- pip
+- Docker 
 
 ## Installation
-
-*Works on Linux system*
 
 ### Cloning this repository
 
@@ -119,13 +150,6 @@ To run RefgenDetector with the files:
 
    ``` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector/examples/path_to_headers -t Headers```
 
-   Check your installation has been successful by checking the test results are correct:
-
-   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00001753746, b37
-   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00005469864, hg19
-   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00005572695.gz, hs37d5
-   PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_HEADERS/EGAF00007462306, hs38DH_extra
-
 ### Test with BAM and CRAMs
 
 In the folder TEST_BAM_CRAM there are a BAM and a CRAM obtained from synthetic BAM an CRAMs stored in the EGA. They
@@ -137,17 +161,12 @@ Further information about them can be found in the file *where_to_find_this_file
 To run RefgenDetector with the files:
 
 1. Modify the txt *path_to_bam_cram* so the paths match those in your computer.
-    2. Run:
+
+2. Run:
 
        `` $ refgenDetector -p /PATH_WHERE_YOU_CLONED_THE_REPOSITORY/refgenDetector_pip-master/examples/path_to_bam_cram
        -t BAM/CRAM ``
 
-       Check your installation has been successful by checking the test results are correct:
-
-       PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam,
-       hs38DH_extra
-       PATH_TO_YOUR_COMPUTER_SETUP/refgenDetector_pip-master/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.
-       10000-10100__21.5000000-5050000.cram, hs38DH_extra
 
 ## Licence and funding
 

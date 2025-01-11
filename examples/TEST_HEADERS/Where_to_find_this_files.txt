@@ -6,3 +6,5 @@ EGAS00001005042 -- EGAF00001753746
 EGAS00001005591 -- EGAF00005469864
 EGAS00001005702 -- EGAF00005572695
 EGAS00001002472 -- EGAF00007462306
+
+The rest of the files were obtained by mapping a synthethic FASTQ, using minimap2, to the different reference genomes versions.

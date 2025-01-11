@@ -8,6 +8,8 @@ __maintainer__ = "Mireia Marin Ginestar"
 __email__ = "mireia.marin@crg.eu"
 __status__ = "Developement"
 
+version = "2.0.0"
+
 import os
 import sys
 # Add the parent directory to the Python path
@@ -176,6 +178,7 @@ def get_info_bamcram(header_bam_cram, target_file, md5, assembly):
 def process_data_bamcram(target_file, md5, assembly):
     """
     First function of the BAM/CRAM module. It opens each BAM or CRAM provided by the user and extracts the header.
+
     """
     try:
         save = pysam.set_verbosity(0)  # https://github.com/pysam-developers/pysam/issues/939
@@ -244,21 +247,21 @@ def main():
                              "your command. This will print the assembly if the field AS was present in "
                              "your header")
     args = parser.parse_args()
+    print(f"* Running refgenDetector {version} *")
     try: #try to open the main txt (-p)
         with open(args.path,"r") as txt:  # reads the txt with the paths to analyze
-            print("* Running refgenDetector v2.0.0 *")
             if args.type == "Headers":
                 for target_file in txt:  # for each target file in the txt, it calls the function to open the
                     # headers saved in a txt and passes the arguments md5 and assembly.
                     console.print("[bold]---[/bold]")
                     process_data_txt(target_file.strip(), args.md5, args.assembly)
-                    console.print("[bold]---[/bold]")
+
             else: # the target files will be BAMs or CRAMs
                 for target_file in txt:  # for each target file in the txt, it calls the function to get headers
                     # from BAM and CRAMs and passes the arguments md5 and assembly.
                     console.print("[bold]---[/bold]")
                     process_data_bamcram(target_file.strip(), args.md5, args.assembly)
-                    console.print("[bold]---[/bold]")
+            console.print("[bold]---[/bold]")
     except OSError: #if the file provided in --path cant be opened
         print("The file provided in --path doesn't exist. Make sure to include the complete path to a txt file "
               "formed by paths to headers saved in a txts or to BAM/CRAMs files (one per line)")

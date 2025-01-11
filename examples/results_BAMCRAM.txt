@@ -1,2 +1,11 @@
-HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam, hs38DH_extra
-HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.cram, hs38DH_extra
+* Running refgenDetector 2.0.0 *
+---
+File: /home/mireia/Bioinfo/BioQC/RefgenDetector/refgenDetector/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.bam 
+Specie detected: Homo sapiens 
+Reference genome version: hs38DH_extra
+---
+File: /home/mireia/Bioinfo/BioQC/RefgenDetector/refgenDetector/examples/TEST_BAM_CRAM/HG00096.GRCh38DH__1097r__10.10000-10100__21.5000000-5050000.cram 
+Specie detected: Homo sapiens 
+Reference genome version: hs38DH_extra
+---
+

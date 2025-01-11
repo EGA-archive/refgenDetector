@@ -1,4 +1,63 @@
-EGAF00001753746, b37
-EGAF00005469864, hg19
-EGAF00005572695.gz, hs37d5
-EGAF00007462306, hs38DH_extra
+* Running refgenDetector 2.0.0 *
+---
+File: examples/TEST_HEADERS/EGAF00001753746 
+Specie detected: Homo sapiens 
+Reference genome version: b37
+---
+File: examples/TEST_HEADERS/EGAF00005469864 
+Specie detected: Homo sapiens 
+Reference genome version: hg19
+---
+File: examples/TEST_HEADERS/EGAF00005572695.gz 
+Specie detected: Homo sapiens 
+Reference genome version: hs37d5
+---
+File: examples/TEST_HEADERS/EGAF00007462306 
+Specie detected: Homo sapiens 
+Reference genome version: hs38DH_extra
+---
+File: examples/TEST_HEADERS/header_ASM58v2 
+Specie detected: Escherichia Coli 
+Reference genome version: ASM584v2
+---
+File: examples/TEST_HEADERS/header_danrer11 
+Specie detected: Danio Rerio 
+Reference genome version: danRer11
+---
+File: examples/TEST_HEADERS/header_dm6 
+Specie detected: Drosophila Melanogaster 
+Reference genome version: dm6
+---
+File: examples/TEST_HEADERS/header_MFA1912RKS 
+Specie detected: Homo sapiens 
+Reference genome version: hg16
+---
+File: examples/TEST_HEADERS/header_mm10 
+Specie detected: Mus musculus 
+Reference genome version: mm10
+---
+File: examples/TEST_HEADERS/header_pantro2.1.4 
+Specie detected: Pan troglodytes 
+Reference genome version: Pan_troglodytes-2.1
+---
+File: examples/TEST_HEADERS/header_R64 
+Specie detected: Saccharomyces cerevisiae 
+Reference genome version: R64
+---
+File: examples/TEST_HEADERS/header_rhemac3 
+Specie detected: Macaca mulatta 
+Reference genome version: rheMac3
+---
+File: examples/TEST_HEADERS/header_rnor_6 
+Specie detected: Rattus norvegicus 
+Reference genome version: Rnor_6_0
+---
+File: examples/TEST_HEADERS/header_tair 
+Specie detected: Arabidopsis thaliana 
+Reference genome version: TAIR
+---
+File: examples/TEST_HEADERS/header_WBcel235 
+Specie detected: Caenorhabditis elegans 
+Reference genome version: WBcel235
+---
+

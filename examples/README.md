@@ -12,9 +12,8 @@ To run RefgenDetector with the files:
 1. Modify the txt *path_to_headers* so the paths match those in your computer. 
 2. Run:
 ``
-TODO
+refgenDetector -t Headers -p [PATH_IN_YOUR_COMPUTER]/examples/path_to_headers
 ``
-
 
 ## Test with BAM and CRAMs
 
@@ -29,5 +28,5 @@ To run RefgenDetector with the files:
 1. Modify the txt *path_to_bam_cram* so the paths match those in your computer. 
 2. Run:
 ``
-TODO
+refgenDetector -t BAM/CRAM -p [PATH_IN_YOUR_COMPUTER]/examples/path_to_bam_cram
 ``
