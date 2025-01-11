@@ -8,7 +8,7 @@ RefgenDetector is able to infer the following reference genomes:
 
 **Primates**
 
-🧬 Homo sapiens
+👤 Homo sapiens
 
 - hg16
 - hg17
