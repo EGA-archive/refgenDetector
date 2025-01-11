@@ -59,7 +59,7 @@ RefgenDetector is able to infer the following reference genomes:
 
 **Invertebrates**
 
-🦟 Drosophila Melanogaster
+🪰 Drosophila Melanogaster
 
 - dm5
 - dm6
