@@ -120,25 +120,19 @@ $ refgenDetector -h
 ```
 
 ```
-usage: INFERRING THE REFERENCE GENOME USED TO ALIGN BAM OR CRAM FILE
-       [-h] -p PATH -t {BAM/CRAM,Headers} [-m] [-a]
+usage: INFERRING THE REFERENCE GENOME USED TO ALIGN BAM OR CRAM FILE [-h] -p PATH -t {BAM/CRAM,Headers} [-m] [-a]
 
 options:
   -h, --help            show this help message and exit
-  -p PATH, --path PATH  Path to main txt. It will consist of the paths to the
-                        files to be analyzed (one path per line)
+  -p PATH, --path PATH  Path to main txt. It will consist of paths to the files to be analyzed (one path per line).
   -t {BAM/CRAM,Headers}, --type {BAM/CRAM,Headers}
-                        All the files in the txt provided in --path must be
-                        BAM/CRAMs or headers in a txt. Choose -tdepending on
-                        the type of files you are going to analyze
-  -m, --md5             [OPTIONAL] If you want to obtain the md5 of the
-                        contigs present in the header, add --md5 to your
-                        command. This will print the md5 values if the field
-                        M5 was present in your header
-  -a, --assembly        [OPTIONAL] If you want to obtain the assembly declared
-                        in the header add --assembly to your command. This
-                        will print the assembly if the field AS was present in
-                        your header
+                        All the files in the txt provided in --path must be BAM/CRAMs or headers in a txt. 
+                        Choose -t depending on the type of files you are going to analyze.
+  -m, --md5             [OPTIONAL] If you want to obtain the md5 of the contigs present in the header, add --md5 to your command.
+                        This will print the md5 values if the field M5 was present in your header.
+  -a, --assembly        [OPTIONAL] If you want to obtain the assembly declared in the header add --assembly to your command. 
+                        This will print the assembly if the field AS was present in your header.
+
 
 ```
 
