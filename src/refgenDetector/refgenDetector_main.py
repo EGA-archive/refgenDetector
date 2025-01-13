@@ -185,7 +185,8 @@ def process_data_bamcram(target_file, md5, assembly):
         bam_cram = pysam.AlignmentFile(target_file, "rb")  # open bam/cram using pysam library
         pysam.set_verbosity(save)
     except Exception: # printed if the user chose -t BAM/CRAM but the paths in -p were pointing to txts
-        print("The BAM/CRAMs can't be opened, please check your path or that you are using the correct --type")
+        console.print(f"[bold]File:[/bold] {target_file} \n[bold][red]Error:[/bold][red] The path provided is not "
+                      f"found or you are using the incorrect --type option.")
         return #the bam and cram in --path will be analyzed and the incorrect format will be skipped
     header_bam_cram = bam_cram.header  # extract header object from AligmentFile class
     get_info_bamcram(header_bam_cram, target_file, md5, assembly)
@@ -197,26 +198,27 @@ def process_data_txt(target_file, md5, assembly):
     First function of the txt module. It opens each header (saved in a txt) provided by the user. Its prepared to open a
     txt compressed with gzip or uncompressed. It can read both utf-8 and iso-8859-1.
     """
-    #try: #if the file is indeed a txt
-    try: #tries to open an uncompressed txt
-        try: #tries to open the file with utf-8 encoding
-            with open(target_file,"r") as header_txt:
-                get_info_txt(header_txt, md5, assembly)
-        except UnicodeError: #tries to open the file with iso-8859-1 encoding
-            with open(target_file,"r", encoding="iso-8859-1") as header_txt:  # tries to open the file with utf-8
-                # encoding
-                get_info_txt(header_txt, md5, assembly)
-    except: #tries to open a compressed txt
-        try: #tries to open a compressed file with utf-8 encoding
-            with gzip.open(target_file,"rt") as header_txt:
-                get_info_txt(header_txt, md5, assembly)
-        except: #tries to open a compressed file with iso-8859-1 encoding
-            with gzip.open(target_file,"rt", encoding="iso-8859-1") as header_txt:  # tries to open the file with
-                # utf-8 encoding
-                get_info_txt(header_txt, md5, assembly)
-    """except: #if the file is not a txt it breaks
-        print("Please, check you are using the correct --type or that the path to the header is correct")
-        return # the txts in --path will be analyzed and the incorrect formats will be skipped"""
+    try: #if the file is indeed a txt
+        try: #tries to open an uncompressed txt
+            try: #tries to open the file with utf-8 encoding
+                with open(target_file,"r") as header_txt:
+                    get_info_txt(header_txt, md5, assembly)
+            except UnicodeError: #tries to open the file with iso-8859-1 encoding
+                with open(target_file,"r", encoding="iso-8859-1") as header_txt:  # tries to open the file with utf-8
+                    # encoding
+                    get_info_txt(header_txt, md5, assembly)
+        except: #tries to open a compressed txt
+            try: #tries to open a compressed file with utf-8 encoding
+                with gzip.open(target_file,"rt") as header_txt:
+                    get_info_txt(header_txt, md5, assembly)
+            except: #tries to open a compressed file with iso-8859-1 encoding
+                with gzip.open(target_file,"rt", encoding="iso-8859-1") as header_txt:  # tries to open the file with
+                    # utf-8 encoding
+                    get_info_txt(header_txt, md5, assembly)
+    except: #if the file is not a txt it breaks
+        console.print(f"[bold]File:[/bold] {target_file} \n[bold][red]Error:[/bold][red] The path provided is not "
+                      f"found or you are using the incorrect --type option.")
+        return # the txts in --path will be analyzed and the incorrect formats will be skipped
 
 @monitor_resources
 def main():
@@ -226,26 +228,26 @@ def main():
 
     parser = argparse.ArgumentParser(prog="INFERRING THE REFERENCE GENOME USED TO ALIGN BAM OR CRAM FILE")
     #MANDATORY ARGUMENTS
-    parser.add_argument("-p", "--path", help="Path to main txt. It will consist of the paths to the files to be "
-                                             "analyzed (one path per line)",
+    parser.add_argument("-p", "--path", help="Path to main txt. It will consist of paths to the files to be "
+                                             "analyzed (one path per line).",
                         required=True)
     parser.add_argument("-t", "--type", choices=["BAM/CRAM", "Headers"], help="All the files in the txt provided "
                                                                               "in --path must be BAM/CRAMs or "
-                                                                              "headers in a txt. Choose -t"
+                                                                              "headers in a txt. Choose -t "
                                                                               "depending on the type of files you are going to "
-                                                                              "analyze",
+                                                                              "analyze.",
                                                                           required=True)
     #OPTIONAL ARGUMENTS
     parser.add_argument("-m", "--md5", required=False, action="store_true",
                         help="[OPTIONAL] If you want to obtain the md5 of the contigs present in the header, "
                              "add --md5 to "
                              "your command. This will print the md5 values if the field M5 was present in "
-                             "your header")
+                             "your header.")
     parser.add_argument("-a", "--assembly", required=False, action="store_true",
                         help="[OPTIONAL] If you want to obtain the assembly declared in the header add --assembly "
                              "to "
                              "your command. This will print the assembly if the field AS was present in "
-                             "your header")
+                             "your header.")
     args = parser.parse_args()
     print(f"* Running refgenDetector {version} *")
     try: #try to open the main txt (-p)
@@ -263,8 +265,10 @@ def main():
                     process_data_bamcram(target_file.strip(), args.md5, args.assembly)
             console.print("[bold]---[/bold]")
     except OSError: #if the file provided in --path cant be opened
-        print("The file provided in --path doesn't exist. Make sure to include the complete path to a txt file "
-              "formed by paths to headers saved in a txts or to BAM/CRAMs files (one per line)")
+        console.print(f"[red]The file {args.path} provided in --path can't be opened. Make sure to include the path "
+                      f"to a txt file formed by paths to headers saved in txts or to BAM/CRAMs files (one per line)[/red]"
+                      f"\nRun [bold]refgenDetector -h[/bold] to get more information about the usage of the tool."
+                      f"\n---")
 
 
 
