@@ -101,7 +101,7 @@ Depending on how you want to install the package:
 
 2. ``` $ cd PATH_WHERE_YOU_CLONED_THE_REPOSITORY/src/refgenDetector ```
 
-3. ``$ python3 refgenDetector.py -h ``
+3. ``$ python3 refgenDetector_main.py -h ``
 
 ### From pypi
 
