@@ -86,6 +86,8 @@ def comparison(dict_SN_LN, target_file):
         for ref in major_releases
     ]
 
+    print(matches) # TODO add error raising when there are matches to more than one major release (except hg17-hg18 and rhemac3 and rhemac8
+
     # Find the major release with the maximum matches
     match = max(matches, key=lambda ref_gen_w_macthes: ref_gen_w_macthes[0]) # The key parameter specifies a function that extracts a
     # value from each element in the iterable to be used for comparisons

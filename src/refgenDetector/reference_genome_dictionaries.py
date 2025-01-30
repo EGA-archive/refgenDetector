@@ -722,7 +722,6 @@ major_releases = {"hg16": {"ref_gen": hg16, "build": "hg16", "species": "Homo sa
                   "TAIR": {"ref_gen": TAIR, "build": "TAIR", "species": "Arabidopsis thaliana"},
                   "Sscrofa10_2": {"ref_gen": Sscrofa10_2, "build": "Sscrofa10_2", "species": "Sus scrofa"},
                   "Sscrofa11_1": {"ref_gen": Sscrofa11_1, "build": "Sscrofa11_1", "species": "Sus scrofa"}
-
                   }
 
 
@@ -737,5 +736,24 @@ The order of the keys in flavors_GRCh37 is not modifiable.
 b37 must be before hs37d5 for when it's
 """
 
+nested_list = []
 
+for key, value in major_releases.items():
+    ref_gen_dict = value["ref_gen"]
+    nested_list.append(list(ref_gen_dict.values()))  # Convert dict values to a list before appending
 
+values_list = []
+
+for i in nested_list:
+    for j in i:
+        values_list.append(j)
+
+from collections import Counter
+
+# Count occurrences
+counts = Counter(values_list)
+
+# Filter duplicates
+duplicates = {item: count for item, count in counts.items() if count > 1}
+
+print("Duplicates and their counts:", duplicates)
