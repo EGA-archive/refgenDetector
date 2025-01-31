@@ -86,43 +86,53 @@ def comparison(dict_SN_LN, target_file):
         for ref in major_releases
     ]
 
-    print(matches) # TODO add error raising when there are matches to more than one major release (except hg17-hg18 and rhemac3 and rhemac8
+    multiple_matches = []  # check all the contigs belong to the same release version
+    for match in matches:
+        if match[0] != 0:
+            multiple_matches.append(match)
 
-    # Find the major release with the maximum matches
-    match = max(matches, key=lambda ref_gen_w_macthes: ref_gen_w_macthes[0]) # The key parameter specifies a function that extracts a
-    # value from each element in the iterable to be used for comparisons
+    if len(multiple_matches) != 1 :
+        if multiple_matches[0][1] != "hg17" and multiple_matches[1][1] != "hg18": # these versions share contig lengths
+            if multiple_matches[0][1] != "rhemac3" and multiple_matches[1][1] != "rhemac8":
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold][red]Error:[/bold] Inconsistency found - file "
+                              f"contains contigs from different genome versions[/red]")
+    else:
+        # Find the major release with the maximum matches
+        match = max(matches, key=lambda ref_gen_w_macthes: ref_gen_w_macthes[0]) # The key parameter specifies a function that extracts a
+        # value from each element in the iterable to be used for comparisons
 
-    if match[1] == "GRCh37": #check for GRCh37 flavors
+        if match[1] == "GRCh37": #check for GRCh37 flavors
 
-        matches_flavors = [
-            intersection_targetfile_referencerepo(dict_SN_LN, flavors_GRCh37[ref])
-            for ref in flavors_GRCh37
-        ]
-        match_flavors = max(matches_flavors, key=lambda x: x[0])
-        if match_flavors: #if some flavor was defined it prints it
-            console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] {match_flavors[2]} "
-            f"[bold]\nReference genome version:[/bold] {match_flavors[1]}")
-        else: #if there wasnt any flavor inferred, the major release it printed
-            console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n["
-                          f"bold]Reference genome version:[/bold] GRCh37")
+            matches_flavors = [
+                intersection_targetfile_referencerepo(dict_SN_LN, flavors_GRCh37[ref])
+                for ref in flavors_GRCh37
+            ]
 
-    elif match[1] == "GRCh38": #checks for GRCh38 flavors
+            match_flavors = max(matches_flavors, key=lambda x: x[0])
+            if match_flavors: #if some flavor was defined it prints it
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] {match_flavors[2]} "
+                f"[bold]\nReference genome version:[/bold] {match_flavors[1]}")
+            else: #if there wasnt any flavor inferred, the major release it printed
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n["
+                              f"bold]Reference genome version:[/bold] GRCh37")
 
-        if any("HLA-" in key for key in dict_SN_LN.keys()):
-            #first checks if the contigs contain in their names HLA-
-            console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n[bold]"
-                          f"Reference genome version:[/bold] hs38DH_extra") # if so, the reference genome used was
-            # hs38DH_extra
-        elif set(dict_SN_LN.values()).intersection(verily_difGRCh38.values()):#checks if the Verily's unique
-            # lengths are present
-            console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n[bold]"
-                          f"Reference genome version:[/bold] GRCh38_no_alt_plus_hs38d1")
-        else: # if no GRCh38 flavor is inferred, the major release is printed
-            console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n["
-                          f"bold]Reference genome version:[/bold] GRCh38)")
-    else: # print the major releases with no considered flavors.
-        console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] {match[2]} "
-              f"\n[bold]Reference genome version:[/bold] {match[1]}")
+        elif match[1] == "GRCh38": #checks for GRCh38 flavors
+
+            if any("HLA-" in key for key in dict_SN_LN.keys()):
+                #first checks if the contigs contain in their names HLA-
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n[bold]"
+                              f"Reference genome version:[/bold] hs38DH_extra") # if so, the reference genome used was
+                # hs38DH_extra
+            elif set(dict_SN_LN.values()).intersection(verily_difGRCh38.values()):#checks if the Verily's unique
+                # lengths are present
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n[bold]"
+                              f"Reference genome version:[/bold] GRCh38_no_alt_plus_hs38d1")
+            else: # if no GRCh38 flavor is inferred, the major release is printed
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n["
+                              f"bold]Reference genome version:[/bold] GRCh38)")
+        else: # print the major releases with no considered flavors.
+            console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] {match[2]} "
+                  f"\n[bold]Reference genome version:[/bold] {match[1]}")
 
 def get_info_txt(header_txt, md5, assembly):
     """
