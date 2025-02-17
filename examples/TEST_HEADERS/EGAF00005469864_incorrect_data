@@ -1,0 +1,12 @@
+@HD	VN:1.0	SO:coordinate
+@PG	ID:iSAAC	PN:iSAAC	CL:/opt/illumina/Isis/2.5.26.13/Workflows/ResequencingWorker/isaac-align --stop-at Bam --lane-number-max 2048 --bam-header-tag @PG\tID:Isaac Whole Genome Sequencing\tVN:3.0.0.0 --reference-genome /genomes/Homo_sapiens/UCSC/hg19/Sequence/IsaacIndex/sorted-reference.xml --cleanup-intermediary 1 --memory-limit 56 --output-directory /data/scratch/workspace/RunFolder/Data/Intensities/BaseCalls/Alignment/IsaacAlignment --temp-directory /data/scratch/workspace/RunFolder/Data/Intensities/BaseCalls/Alignment/IsaacTemp --base-quality-cutoff 15 --stats-image-format none --variable-read-length yes --ignore-missing-bcls 1 --ignore-missing-filters 1 --per-tile-tls 1 --seed-length 32 --base-calls-directory /data/scratch/workspace/RunFolder/Data/Intensities/BaseCalls --barcode-mismatches 1 --use-bases-mask Y147N1,Y147N1 --tiles s_1,s_2,s_3,s_4,s_5,s_6,s_7,s_8 --base-calls-format fastq-gz -s /data/scratch/workspace/RunFolder/Data/Intensities/BaseCalls/Alignment/tmp.0.0.dat	VN:iSAAC-01.14.02.06
+@PG	ID:Isaac Whole Genome Sequencing	VN:3.0.0.0
+@RG	ID:0	PL:ILLUMINA	SM:NA24695 combined	PU:HB66DADXX:1:none
+@RG	ID:1	PL:ILLUMINA	SM:NA24695 combined	PU:HB66DADXX:2:none
+@RG	ID:2	PL:ILLUMINA	SM:NA24695 combined	PU:HB66DADXX:3:none
+@RG	ID:3	PL:ILLUMINA	SM:NA24695 combined	PU:HB66DADXX:4:none
+@RG	ID:4	PL:ILLUMINA	SM:NA24695 combined	PU:HB66DADXX:5:none
+@RG	ID:5	PL:ILLUMINA	SM:NA24695 combined	PU:HB66DADXX:6:none
+@RG	ID:6	PL:ILLUMINA	SM:NA24695 combined	PU:HB66DADXX:7:none
+@RG	ID:7	PL:ILLUMINA	SM:NA24695 combined	PU:HB66DADXX:8:none
+@SQ	SN:chr1	LN:2956422	UR:/genomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa	M5:1b22b98cdeb4a9304cb5d48026a85128

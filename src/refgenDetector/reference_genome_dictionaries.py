@@ -714,7 +714,7 @@ major_releases = {"hg16": {"ref_gen": hg16, "build": "hg16", "species": "Homo sa
                   "ASM886v2": {"ref_gen": ASM886v2, "build": "ASM886v2", "species": "Escherichia coli"},
                   "ASM584v2": {"ref_gen": ASM584v2, "build": "ASM584v2", "species": "Escherichia Coli"},
                   "pantro3_0": {"ref_gen": pantro3_0, "build": "pantro3_0", "species": "Pan troglodytes"},
-                  "pantro_2_1_4": {"ref_gen": pantro_2_1_4, "build": "Pan_troglodytes-2.1",
+                  "pantro_2_1_4": {"ref_gen": pantro_2_1_4, "build": "pantro_2_1_4",
                                    "species": "Pan troglodytes"},
                   "Mmul10": {"ref_gen": Mmul10, "build": "Mmul10", "species": "Macaca mulatta"},
                   "rheMac8": {"ref_gen": rheMac8, "build": "rheMac8", "species": "Macaca mulatta"},
@@ -729,12 +729,46 @@ flavors_GRCh37 = {"b37":  {"ref_gen": b37, "build": "b37", "species": "Homo sapi
                   "hs37d5": {"ref_gen": hs37d5, "build": "hs37d5", "species": "Homo sapiens"},
                   "hg19":  {"ref_gen": hg19, "build": "hg19", "species": "Homo sapiens"}
                   }  # GRCh37 flavors that can be inferred
-
 """
 IMPORTANT NOTE
 The order of the keys in flavors_GRCh37 is not modifiable. 
-b37 must be before hs37d5 for when it's
 """
+
+avail_dicts = ["hg16","hg17","hg18","GRCh37","GRCh38","T2T","mm7","mm8","mm9","mm10","mm39","dm5","dm6","danRer10","danRer11","WBcel215","WBcel235","mRatBN7_2","Rnor_6_0","R64","ASM886v2","ASM584v2","pantro3_0","pantro_2_1_4","Mmul10","rheMac8","rheMac3","TAIR","Sscrofa10_2","Sscrofa11_1"]
+
+min_values = {
+    'hg16': 46976097,
+     'hg17': 46944323,
+     'hg18': 46944323,
+     'GRCh37': 48129895,
+     'GRCh38': 46709983,
+     'T2T': 45090682,
+     'mm7': 15523453,
+     'mm8': 16029404,
+     'mm9': 15902555,
+     'mm10': 61431566,
+     'mm39': 61420004,
+     'dm5': 19517,
+     'dm6': 1348131,
+     'danRer10': 36898761,
+     'danRer11': 37502051,
+     'WBcel215': 13783700,
+     'WBcel235': 13794,
+     'mRatBN7_2': 18315841,
+     'Rnor_6_0': 3310458,
+     'R64': 85779,
+     'ASM886v2': 1435,
+     'ASM584v2': 4641652,
+     'pantro3_0': 26350515,
+     'pantro_2_1_4': 23952694,
+     'Mmul10': 11753682,
+     'rheMac8': 11753682,
+     'rheMac3': 64156825,
+     'TAIR': 154478,
+     'Sscrofa10_2': 1637716,
+     'Sscrofa11_1': 55982971
+}
+
 
 def get_duplicate_lengths():
     nested_list = []
@@ -759,4 +793,11 @@ def get_duplicate_lengths():
 
     print(duplicates)
 
+def get_min_values():
+    min_values = {}
+    for name in avail_dicts:
+        d = globals()[name]  # Get dictionary by name
+        min_values[name] = d[min(d, key=d.get)]  # Store min value
+
+    print(min_values)  # Output the dictionary
 
