@@ -80,7 +80,7 @@ def intersection_targetfile_referencerepo(dict_SN_LN, reference_genome):
     Returns:
         matches (set) : list of lengths matching to the version currently being read
         reference_genome["build"] (str): build of the version currently being read
-        reference_genome["species"] (str): specie of the version currently being read
+        reference_genome["species"] (str): species of the version currently being read
     """
     matches = set(dict_SN_LN.values()).intersection(reference_genome["ref_gen"].values())
     return matches, reference_genome["build"], reference_genome["species"]
@@ -90,7 +90,7 @@ def check_if_decoy(matches_info, target_file):
     Checks if there's inconsistency of the versions in the target file or if the multiple matches are random
     Args:
          matches_info (list): list of tuples. Each tuple have 3 positions: lengths from the contigs matching,
-         version where the contigs match, specie from the version.
+         version where the contigs match, species from the version.
          target_file (str): path of the target file
 
     Returns:
@@ -129,10 +129,10 @@ def comparison(dict_SN_LN, target_file):
          target_file (str): path of the target file
 
     Returns:
-        Prints the file path being analyzed,the specie and the reference genome version inferred.
+        Prints the file path being analyzed,the species and the reference genome version inferred.
         It raises an error if:
-            - The contigs in the target file are not in the database (a specie or ref gen version not included in the tool)
-            - There are contigs belonging to more than one release/specie. This will be printed if the match between
+            - The contigs in the target file are not in the database (a species or ref gen version not included in the tool)
+            - There are contigs belonging to more than one release/species. This will be printed if the match between
             species is as long as the shortest chromosome from the version with the most matches. If the match is
             shorter it assumes it's a random match e.g a decoy contig that randomly matches the length of
             another species/version.
@@ -170,27 +170,27 @@ def comparison(dict_SN_LN, target_file):
 
             match_flavors = max(matches_flavors, key=lambda x: x[0])
             if match_flavors: #if some flavor was defined it prints it
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] {match_flavors[2]} "
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] {match_flavors[2]} "
                 f"[bold]\nReference genome version:[/bold] {match_flavors[1]}")
             else: #if there wasnt any flavor inferred, the major release it printed
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n["
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] Homo sapiens \n["
                               f"bold]Reference genome version:[/bold] GRCh37")
 
         elif max_match[1] == "GRCh38": #checks for GRCh38 flavors
 
             if any("HLA-" in key for key in dict_SN_LN.keys()):
                 #first checks if the contigs contain in their names HLA-
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n[bold]"
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] Homo sapiens \n[bold]"
                               f"Reference genome version:[/bold] hs38DH_extra")
             elif set(dict_SN_LN.values()).intersection(verily_difGRCh38.values()):#checks if the Verily's unique
                 # lengths are present
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n[bold]"
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] Homo sapiens \n[bold]"
                               f"Reference genome version:[/bold] GRCh38_no_alt_plus_hs38d1")
             else: # if no GRCh38 flavor is inferred, the major release is printed
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] Homo sapiens \n["
+                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] Homo sapiens \n["
                               f"bold]Reference genome version:[/bold] GRCh38")
         else: # print the major releases with no considered flavors.
-            console.print(f"[bold]File:[/bold] {target_file} \n[bold]Specie detected:[/bold] {match[2]} "
+            console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] {match[2]} "
                   f"\n[bold]Reference genome version:[/bold] {match[1]}")
 
 
