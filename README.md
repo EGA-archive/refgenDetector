@@ -118,7 +118,18 @@ By getting the number of matches between these distinguishing positions and the 
 Depending on how you want to install the package:
 
 - pip
-- Docker 
+- Docker
+
+Download the PKL files for the inference with VCFs: 
+
+1. [Download the pkl reference](https://crgcnag-my.sharepoint.com/:u:/g/personal/mimarin_crg_es/IQByWKuqxkRMR7IfzwTy6CFiAUdAcXVkFH7IYQMj8wwrYTs?e=rt8p19)
+
+2. Move the pkls to the correct path:
+
+```
+mv pkls.zip /refgenDetector/src/refgenDetector/
+unzip /refgenDetector/src/refgenDetector/pkls.zip
+```
 
 ## Installation
 
@@ -143,28 +154,22 @@ $ refgenDetector -h
 ```
 
 ```
-usage: INFERRING THE REFERENCE GENOME USED TO ALIGN BAM OR CRAM FILE [-h] -p PATH -t {BAM/CRAM,Headers} [-m] [-a]
+usage: INFERRING THE REFERENCE GENOME USED TO ALIGN BAM OR CRAM FILE [-h] -f FILE -t {BAM/CRAM,Header,VCF,BIM} [--md5] [-a] [-v MAX_N_VAR] [-m MATCHES] [-r]
 
-options:
+optional arguments:
   -h, --help            show this help message and exit
-  -p PATH, --path PATH  Path to main txt. It will consist of paths to the files to be analyzed (one path per line).
-  -t {BAM/CRAM,Headers}, --type {BAM/CRAM,Headers}
-                        All the files in the txt provided in --path must be BAM/CRAMs or headers in a txt. 
-                        Choose -t depending on the type of files you are going to analyze.
-  -m, --md5             [OPTIONAL] If you want to obtain the md5 of the contigs present in the header, add --md5 to your command.
-                        This will print the md5 values if the field M5 was present in your header.
-  -a, --assembly        [OPTIONAL] If you want to obtain the assembly declared in the header add --assembly to your command. 
-                        This will print the assembly if the field AS was present in your header.
-
-
+  -f FILE, --file FILE  Input file path
+  -t {BAM/CRAM,Header,VCF,BIM}, --type {BAM/CRAM,Header,VCF,BIM}
+                        Type of files to analyze.
+  --md5                 Print md5 values if present in header.
+  -a, --assembly        Print assembly if present in header.
+  -v MAX_N_VAR, --max_n_var MAX_N_VAR
+                        Maximum number of variants to read before stopping inference. The file is processed in chunks of 100,000 variants, so this value must be a multiple of 100,000 (e.g. 100000,
+                        200000, 300000, ...).
+  -m MATCHES, --matches MATCHES
+                        Number of matches required before stopping. [DEFAULT:5000]
+  -r, --resources       When set, print execution time, CPU, memory, and disk I/O usage
 ```
-
-In the main file (```-p argument```) you should add the paths to all the files you want to analyze. RefgenDetector
-works with complete BAM and CRAMs and with txt files containing only the headers. The txt can be uncompressed, gzip
-compressed, and with encodings utf-8 and iso-8859-1.
-
-All the files included in this argument must be the same type, meaning, you should run RefgenDetector to analyze only
-BAM/CRAMs or only headers.
 
 ## Test RefgenDetector
 
