@@ -90,7 +90,15 @@ RefgenDetector is able to infer the following reference genomes:
 
 ## Variant Calling Files (VCFs)
 
+Two different sources of information are used to infer the reference genome from variant calling files
 
+* **Header**
+  
+In the VCF specification it is recommended, but **not mandatory** that the VCF header includes tags describing the reference and contigs backing the data contained in the file. When present, the tool will analyze this information and output the reference genome version based on the contig lengths, following the same logic of the aligment files inference. ç
+
+* **Variants**
+
+To infer the reference genome from a VCF the tool will extract 
 ## Requirements
 
 - Python 3.10.6
