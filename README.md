@@ -1,8 +1,12 @@
 # EGA - RefgenDetector
 
-RefgenDetector is a bioinformatics tool that infers the reference genome assembly used during read alignment by analyzing file headers. It identifies major genome releases and derived assemblies across humans and multiple other species by analyzing contig names and lengths. Benchmarking against 94 synthetic datasets achieved a 100% accuracy rate, while large-scale testing on 918,404 real-world files demonstrated 97.13% correctness, failing only when files’ headers are incomplete.
+RefgenDetector is a bioinformatics tool that **infers the reference genome assembly** used to create aligment files (BAM/CRAM/header) and VCFs. 
 
-## Description
+## Aligment Files
+
+It identifies major genome releases and derived assemblies across humans and multiple other species by analyzing contig names and lengths **from the header**. Benchmarking against 94 synthetic datasets achieved a 100% accuracy rate, while large-scale testing on 918,404 real-world files demonstrated 97.13% correctness, failing only when files’ headers are incomplete.
+
+### Description
 
 RefgenDetector is able to infer the following reference genomes:
 
@@ -84,6 +88,9 @@ RefgenDetector is able to infer the following reference genomes:
 
 - R64
 
+## Variant Calling Files (VCFs)
+
+
 ## Requirements
 
 - Python 3.10.6
@@ -106,10 +113,6 @@ Depending on how you want to install the package:
 ### From pypi
 
 ``$ pip install refgenDetector``
-
-### Docker
-
-All the instructions to run refgenDetector in a Docker container can be found [here](https://hub.docker.com/r/beacon2ri/refgendetector). 
 
 ## Usage
 
