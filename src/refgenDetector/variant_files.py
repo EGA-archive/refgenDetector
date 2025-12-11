@@ -2,15 +2,17 @@ import gzip
 import sys
 import time
 import pandas as pd
+from dns.inet import inet_pton
 from aligment_files import comparison
 from chromosomes_dict import *
+from configobj import ConfigObj
 from rich.console import Console
-import argparse
+import json
 
 final_results = []
+config = ConfigObj("./config.config", interpolation="Template")
 console = Console(highlight=False)
-_pickle_cache = {}  # Add this line here
-
+_pickle_cache = {}  # load pkl only once
 
 def gather_and_sum(lists):
     """It gathers and sums all the matches calculated in get_matches()"""
@@ -21,7 +23,7 @@ def gather_and_sum(lists):
                 cumulative_sums[key] += value
             else:
                 cumulative_sums[key] = value
-    console.print("Matches:", cumulative_sums)
+    console.print(f"[bold]Matches: [/bold]", cumulative_sums)
     return cumulative_sums
 
 
@@ -53,7 +55,7 @@ def get_matches(snps, chr):
             console.print(f"Warning: {version_name}-{chr}.pkl not found")
             continue
 
-    console.print("Getting matches. Took:", time.time() - start, "s")
+    #console.print("Getting matches. Took:", time.time() - start, "s")
 
     return matches
 
@@ -61,106 +63,114 @@ def get_matches(snps, chr):
 def trimming_indels(content, ref):
     """If a row is longer than one position it is deleted, deleting this way any indels"""
     try:
-        # Masks for SNPs (handle missing values safely)
-        m_ref = content.iloc[:, 2].str.len().eq(1)  # REF length == 1
-        m_alt = content.iloc[:, 3].str.len().eq(1)  # ALT length == 1
+         # Keep only rows where REF is length 1 or <NON_REF>
+        del_insertions = content[(content.iloc[:, 2].str.len() == 1) | (content.iloc[:, 2] == '<NON_REF>')]
+        
+        # Keep only rows where ALT is length 1 or <NON_REF>
+        vcf_snps = del_insertions[
+            (del_insertions.iloc[:, 3].str.len() == 1) | (del_insertions.iloc[:, 3] == '<NON_REF>')]
+        
+        # Select columns and make an explicit copy
+        snps = vcf_snps.iloc[:, [1, ref]].copy()
+        snps.columns = ['position', 'nucleotide']
 
-        # Filter once, then take the two columns you need and make an explicit copy
-        snps = content.loc[m_ref & m_alt, [content.columns[1], content.columns[ref]]].copy()
+        # Safe assignment using .loc
+        snps.loc[:, 'nucleotide'] = snps['nucleotide'].str.upper()
 
-        # Rename and uppercase nucleotide column (vectorized)
-        snps.columns = ["position", "nucleotide"]
-        snps["nucleotide"] = snps["nucleotide"].astype("string").str.upper()
+        gVCF = False
+        if content.iloc[:, 3].astype(str).str.contains('<NON_REF>').any():
+            gVCF = True
 
-        return snps
-
+        return snps, gVCF
+    
     except Exception:
         console.print("Reference column is empty, please check your input file. Stopping scan.")
         sys.exit(1)
 
-def call_trimming(content, file_type, chr):
+
+def call_trimming(content, chr):
     """ The file must only contain SNPs. This function is necessary because the reference column has a different
     number in vcfs and in bim files """
 
-    start = time.time()
-    if file_type == "VCF":
-        snps = trimming_indels(content, 2)  # content : chr pos ref alt
-    elif file_type == "BIM":
-        snps = trimming_indels(content, 3)
-    console.print("Trimming indels. Took:", time.time() - start, "s")
+    snps, gVCF = trimming_indels(content, 2)  # content : chr pos ref alt
 
     if len(snps) != 0:
         results = get_matches(snps, chr)
         final_results.append(results)
     else:
-        console.print("There aren't FP SNPs in this chunk", style="bold")
+        console.print("There aren't FP SNPs in this chunk", style="bold red")
+    
+    return gVCF
 
 
-def read_and_load(chunk, input_file, file_type):
+def read_and_load(chunk):
     """To avoid loading a big pkl with information from all the chromosomes we first check which chr are there in
     the current chunk and then load only the necessary pkls
     """
+    console.print("[bold]\n++ INFORMATION INFERRED BY THE REF COLUMN ++ [/bold]\n ")
     for chromosome, group_content in chunk.groupby(chunk.columns[0]):
         chromosome_str = str(chromosome)
         if chromosome_str in chromosome_map:
-            chr_key = chromosome_map[chromosome_str]
+            chr_key = chromosome_map[chromosome_str]  
+            gVCF = call_trimming(group_content, chr_key)
             console.print("Variants being mapped from:", chr_key)
-            call_trimming(group_content, file_type, chr_key)
+            
         else:
             console.print(f"Chromosome {chromosome_str} not found in chromosome map. Skipping variants from {chromosome_str}.")
 
+    return gVCF
 
-def read_chunks(complete_file, input_file, file_type, cols,  chunks, matches):
+
+def read_chunks(complete_file, cols):
     """Loads the file in batches to avoid loading completely on memory. If there are enough matches to define the
     version, the loop will stop. If it has loaded more chunks than desired, the loop breaks too. For bim files,
     the inferred version must have at least 50% of the matches"""
-
+    counter = 0
     results = {}
-
+    gVCF = False  # make sure the gVCF always exists
     try:
         for chunk in pd.read_csv(complete_file, sep="\t", comment='#', header=None, chunksize=100000, usecols=cols):
-            read_and_load(chunk, input_file, file_type)
+            gVCF = read_and_load(chunk)
             results = gather_and_sum(final_results)
 
-            try:
-                if max(results.values()) > matches:
-                    break
-
-            except ValueError:
-                    console.print("0 FP SPNs in this chunk", style="bold")
-            
     finally:
         try:
             if max(results.values()) == 0:
                 console.print("No SNPs found to infer the reference genome.", style="bold red")
             else:
                 if max(results.values()) > sum(results.values())/2:
-                    console.print("Inferred Reference genome:", max(results, key=results.get), style="bold dark_cyan")
+                    console.print(f"[bold]Inferred Reference genome:[/bold]", max(results, key=results.get))
+
                 else:
-                    console.print("Any of the versions have more than 50% of the total matches.  [bold] Reference "
+                    console.print("Some of the versions have more than 50% of the total matches.  [bold] Reference "
                                   "genome version unknown. m", style="red")
+
         except ValueError as e:
             console.print("No SNPs found to infer the reference genome.", style="bold red")
+    
+    if gVCF == True:
+        console.print(f"[bold]gVCF by ALT column[/bold]") 
 
-def extract_columns(complete_file, input_file, file_type, chunks, matches):
+def extract_columns(complete_file):
     "Loads only the interesting columns"
-    try:
-        if file_type == "VCF":
-            cols = [0, 1, 3, 4] # chr pos ref alt
-            read_chunks(complete_file, input_file, file_type, cols, chunks, matches)
-        elif file_type == "BIM":
-            cols = [0, 3, 5, 4] # chr pos ref alt
-            read_chunks(complete_file, input_file, file_type, cols, chunks, matches)
-    except ValueError as e:
-        console.print(f"ValueError: An error occurred while processing the columns for file {input_file}: {e}")
-        sys.exit(1)
-    except Exception as e:
-        console.print(f"An unexpected error occurred while extracting columns from file {input_file}. Check your file "
-              f"contains all mandatory columns. Error: {e}")
-        sys.exit(1)
+    cols = [0, 1, 3, 4] # chr pos ref alt
+    read_chunks(complete_file, cols)
 
+def get_n_samples(header):
+
+    mandatory_columns = ["#CHROM", "POS", "ID", "REF", "ALT", "QUAL", "FILTER", "INFO", "FORMAT"] #fixed fields for variant information
+    columns = header[-1].split("\t")
+
+    try:
+        for column in mandatory_columns:
+            columns.remove(column)
+        n_samples = len(columns)
+        console.print(f"[bold]Number of samples:[/bold]", n_samples)
+    except ValueError:
+        console.print(f"[bold]Number of samples: [/bold]1")
 
 def start_refgen_header(header, target_file):
+
     contig_list = [line for line in header if '##contig' in line and 'length' in line]
     if len(contig_list)!=0:
         contig_list2= [i.split(",") for i in contig_list]
@@ -184,6 +194,12 @@ def start_refgen_header(header, target_file):
         console.print("[dark_orange]Contig information not in the header[/dark_orange] - [bold dark_orange]The reference genome can't be "
                       "inferred from the header information [/bold dark_orange]")
         
+    
+    gVCF= [line for line in header if '##ALT=<ID=NON_REF' in line]
+    if gVCF:
+        console.print(f"[bold]gVCF according to header[/bold]")
+        
+
 def extract_header(complete_file, input_file):
     "Extracts header and send it to match the refgenDetector database"
     header = []
@@ -192,46 +208,27 @@ def extract_header(complete_file, input_file):
             header.append(line.strip())
         else:
             break
+
     start_refgen_header(header, input_file)
+    get_n_samples(header)
+
+    
+
+def open_vcf(input_file, n_matches):
+
+    formats = ("vcf")
+    compressed_formats = ("vcf.gz")
+
+    if input_file.endswith(compressed_formats):
+        with gzip.open(input_file, "rt") as complete_file:
+            extract_header(complete_file, input_file)
+            extract_columns(complete_file)
+
+    elif input_file.endswith(formats):
+        with open(input_file, "rt") as complete_file:
+            extract_header(complete_file, input_file)
+            extract_columns(complete_file)
 
 
-def open_file_vcf_bim(input_file, file_type, chunks, matches):
-    """
-    Checks if the file_type is correct. Then, opens the file if it endswith vcf/bim or vcf.gz/bim.gz.
-    """
-    console.print(f"Starting pre-processing for [[light_slate_blue]{input_file}[/light_slate_blue]]")
-    formats = ("vcf", "bim")
-    compressed_formats = ("vcf.gz", "bim.gz")
-    dict_formats = {
-        "vcf.gz": "VCF",
-        "bim.gz": "BIM",
-        "vcf": "VCF",
-        "bim": "BIM"
-    }
 
-    for ext, expected_type in dict_formats.items():
-        if input_file.endswith(ext):
-            if file_type != expected_type:
-                raise ValueError(f"File type should be {expected_type} for .{ext} files.")
-            break
 
-    try:
-        if input_file.endswith(compressed_formats):
-            with gzip.open(input_file, "rt") as complete_file:
-                extract_header(complete_file, input_file)
-                extract_columns(complete_file, input_file, file_type, chunks, matches)
-        elif input_file.endswith(formats):
-            with open(input_file, "rt") as complete_file:
-                extract_header(complete_file, input_file)
-                extract_columns(complete_file, input_file, file_type, chunks, matches)
-        else:
-            console.print("File format not supported. Please state a vcf or bim file, gz compressed or uncompressed")
-    except FileNotFoundError:
-        console.print(f"Error: The file {input_file} was not found in the stated path.")
-        sys.exit(1)
-    except OSError as e:
-        console.print(f"Error: OS error occurred while handling the file {input_file}: {e}")
-        sys.exit(1)
-    except Exception as e:
-        console.print(f"An unexpected error occurred while processing the file {input_file}: {e}")
-        sys.exit(1)

@@ -70,27 +70,25 @@ def monitor_resources(func):
 
 def run_main(args):
     """Main logic of the tool (isolated from CLI parsing)."""
-    print(f"* Running refgenDetector v.{version} *")
+    console.print(f"[bold]* Running refgenDetector v.{version} *[/bold]")
+    console.print(f"---")
+    console.print(f"[bold]++ INFORMATION INFERRED BY THE HEADER ++[/bold]\n")
+    console.print(f"[bold]File:[/bold] {args.file}")
     try:
-        if args.type == "Header":    
-            console.print("[bold]---[/bold]")
+        if args.type == "Header":  
+            console.print("[bold]File type:[/bold] BAM/CRAM header")  
             process_data_txt(args.file, args.md5, args.assembly)
-            console.print("[bold]---[/bold]")
-        
-        elif args.type in ["VCF", "BIM"]:
-            open_file_vcf_bim(args.file, args.type, args.chunks, args.matches)
-        
+        elif args.type in ["VCF"]:
+            console.print("[bold]File type:[/bold] VCF") 
+            open_vcf(args.file, args.matches)
         else:
-            console.print("[bold]---[/bold]")
+            console.print("[bold]File type:[/bold] BAM/CRAM") 
             process_data_bamcram(args.file, args.md5, args.assembly)
-            console.print("[bold]---[/bold]")
-    
     except OSError:
         console.print(f"[red]The file {args.file} provided in --file can't be opened. Make sure to include the path "
                       f"to a txt file formed by paths to headers saved in txts or to BAM/CRAMs files (one per line)[/red]"
-                      f"\nRun [bold]refgenDetector -h[/bold] to get more information about the usage of the tool."
-                      f"\n---")
-
+                      f"\nRun [bold]refgenDetector -h[/bold] to get more information about the usage of the tool.")
+    console.print(f"---")
 
 def main():
     parser = argparse.ArgumentParser(prog="INFERRING THE REFERENCE GENOME USED TO ALIGN BAM OR CRAM FILE")

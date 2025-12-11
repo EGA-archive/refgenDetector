@@ -76,7 +76,7 @@ def comparison(dict_SN_LN, target_file):
          target_file (str): path of the target file
 
     Returns:
-        Prints the file path being analyzed,the species and the reference genome version inferred.
+        Prints the file path being analyzed,the species and the Reference genome version inferred.
         It raises an error if:
             - The contigs in the target file are not in the database (a species or ref gen version not included in the tool)
             - There are contigs belonging to more than one release/species. This will be printed if the match between
@@ -105,7 +105,7 @@ def comparison(dict_SN_LN, target_file):
     if incosistency == False:
 
         if max_match[0] == 0:
-            console.print(f"[bold]File:[/bold] {target_file} \n[bold][red]Reference genome can't be inferred[/bold] - "
+            console.print(f"[bold][red]Reference genome can't be inferred[/bold] - "
                           "The contigs in the file are not found in refgenDetector database[red]")
 
         elif max_match[1] == "GRCh37": #check for GRCh37 flavors
@@ -117,28 +117,28 @@ def comparison(dict_SN_LN, target_file):
             
             match_flavors = max(matches_flavors, key=lambda x: x[0])
             if match_flavors: #if some flavor was defined it prints it
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] {match_flavors[2]} "
-                f"[bold]\nReference genome version:[/bold] {match_flavors[1]}")
+                console.print(f"[bold]Species detected:[/bold] {match_flavors[2]} "
+                f"[bold]\nReference genome version  :[/bold] {match_flavors[1]}")
             else: #if there wasnt any flavor inferred, the major release it printed
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] Homo sapiens \n["
-                              f"bold]Reference genome version:[/bold] GRCh37")
+                console.print(f"[bold]Species detected:[/bold] Homo sapiens \n["
+                              f"bold]Reference genome version  :[/bold] GRCh37")
 
         elif max_match[1] == "GRCh38": #checks for GRCh38 flavors
 
             if any("HLA-" in key for key in dict_SN_LN.keys()):
                 #first checks if the contigs contain in their names HLA-
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] Homo sapiens \n[bold]"
-                              f"Reference genome version:[/bold] hs38DH_extra")
+                console.print(f"[bold]Species detected:[/bold] Homo sapiens \n[bold]"
+                              f"Reference genome version  :[/bold] hs38DH_extra")
             elif set(dict_SN_LN.values()).intersection(verily_difGRCh38.values()):#checks if the Verily's unique
                 # lengths are present
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] Homo sapiens \n[bold]"
-                              f"Reference genome version:[/bold] GRCh38_no_alt_plus_hs38d1")
+                console.print(f"[bold]Species detected:[/bold] Homo sapiens \n[bold]"
+                              f"Reference genome version  :[/bold] GRCh38_no_alt_plus_hs38d1")
             else: # if no GRCh38 flavor is inferred, the major release is printed
-                console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] Homo sapiens \n["
-                              f"bold]Reference genome version:[/bold] GRCh38")
+                console.print(f"[bold]Species detected:[/bold] Homo sapiens \n["
+                              f"bold]Reference genome version  :[/bold] GRCh38")
         else: # print the major releases with no considered flavors.
-            console.print(f"[bold]File:[/bold] {target_file} \n[bold]Species detected:[/bold] {match[2]} "
-                  f"\n[bold]Reference genome version:[/bold] {match[1]}")
+            console.print(f"[bold]Species detected:[/bold] {match[2]} "
+                  f"\n[bold]Reference genome version   (inferred from header) :[/bold] {match[1]}")
 
 
 
@@ -218,8 +218,7 @@ def get_info_txt(header_txt, md5, assembly):
 
     except ValueError:
         print(f"Check the LN field of your header {header_txt.name} only contains numbers")
-
-
+    
     comparison(dict_SN_LN, header_txt.name)
 
     if assembly:  # # if the user chose -a
@@ -244,6 +243,8 @@ def process_data_txt(target_file, md5, assembly):
     Returns:
         header_txt (io.TextIOWrapper): text object
     """
+    console.print(f"[bold]\n ++ INFORMATION INFERRED BY THE HEADER[/bold] ++\n")
+    console.print(f"[bold]File:[/bold] {target_file}")
     try:
         if os.path.isfile(target_file):
             with open(target_file, "r") as header_txt:
