@@ -105,7 +105,7 @@ def read_and_load(chunk):
     """To avoid loading a big pkl with information from all the chromosomes we first check which chr are there in
     the current chunk and then load only the necessary pkls
     """
-    console.print("[bold]\n++ INFORMATION INFERRED BY THE REF COLUMN ++ [/bold]\n ")
+    
     for chromosome, group_content in chunk.groupby(chunk.columns[0]):
         chromosome_str = str(chromosome)
         if chromosome_str in chromosome_map:
@@ -138,7 +138,7 @@ def read_chunks(complete_file, cols, n_matches=None, max_n_var=None):
     chunk_counter = 0
     results = {}
     gVCF = False  # track if any chunk looks like gVCF
-
+    console.print("[bold]\n++ INFORMATION INFERRED BY THE REF COLUMN ++ [/bold]\n ")
     try:
 
         for chunk in pd.read_csv(complete_file, sep="\t", comment="#", header=None, chunksize=100000, usecols=cols,):
