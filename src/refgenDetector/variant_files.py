@@ -7,10 +7,12 @@ from aligment_files import comparison
 from chromosomes_dict import *
 from rich.console import Console
 import json
+import os
 
 final_results = []
 console = Console(highlight=False)
 _pickle_cache = {}  # load pkl only once
+PKL_DIR = os.path.join(os.path.dirname(__file__), "pkls")
 
 def gather_and_sum(lists):
     """It gathers and sums all the matches calculated in get_matches()"""
@@ -33,6 +35,13 @@ def get_matches(snps, chr):
     genome_versions = ["hg18", "GRCh37", "GRCh38", "T2T"]
     matches = []
     
+    if not os.path.isdir(PKL_DIR):
+        console.print(
+            f"[bold red]Error:[/bold red] Required directory not found: {PKL_DIR}\n Execution aborted. \n"
+            "If you haven't downloaded yet the pkl folder: https://crgcnag-my.sharepoint.com/:u:/g/personal/mimarin_crg_es/IQByWKuqxkRMR7IfzwTy6CFiAf5Lleoa9V8QnKi3ByJPzHU?e=fbcfUh"
+        )
+        sys.exit(1)   # Hard stop (cleaner than raising inside loops)
+    
     # Load and check sequentially
     for version_name in genome_versions:
         cache_key = f"{version_name}-{chr}"
@@ -46,7 +55,7 @@ def get_matches(snps, chr):
         try:
             version_df = pd.read_pickle(f"./pkls/{version_name}-{chr}.pkl")
             merged_df = version_df.join(snps.set_index('position'), how='inner')
-            matches_count = (merged_df['nucleotide'] == merged_df[version_name]).sum()
+            matches_count = int((merged_df['nucleotide'] == merged_df[version_name]).sum())
             matches.append([version_name, matches_count])
 
         except FileNotFoundError as e:
