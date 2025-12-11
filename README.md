@@ -90,15 +90,27 @@ RefgenDetector is able to infer the following reference genomes:
 
 ## Variant Calling Files (VCFs)
 
+From VCF files only 4 human assemblies can be inferred: 
+
+- Hg18
+- GRCh37
+- GRCh38
+- T2T
+
 Two different sources of information are used to infer the reference genome from variant calling files
 
 * **Header**
   
-In the VCF specification it is recommended, but **not mandatory** that the VCF header includes tags describing the reference and contigs backing the data contained in the file. When present, the tool will analyze this information and output the reference genome version based on the contig lengths, following the same logic of the aligment files inference. ç
+In the VCF specification it is recommended, but **not mandatory** that the VCF header includes tags describing the reference and contigs backing the data contained in the file. When present, the tool will analyze this information and output the reference genome version based on the contig lengths, following the same logic of the aligment files inference.
 
 * **Variants**
 
-To infer the reference genome from a VCF the tool will extract 
+To infer the reference genome from a VCF the tool will read the VCF file in chunks of 100.000 variants, avoiding to load the complete file in memory. The `POS` and `REF` columns will be extracted and compared to the pkl files.
+
+The pkl files were created comparing the nucleotides in each position for hg18, GRCh37, GRCh38 and T2T. Each file contains a list of the positions where each reference had a different nucleotide (distinguishing positions). 
+
+By getting the number of matches between these distinguishing positions and the `REF` present in the VCF we infer the reference genome version used to call the variants. 
+
 ## Requirements
 
 - Python 3.10.6
