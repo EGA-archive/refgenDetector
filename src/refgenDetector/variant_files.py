@@ -5,12 +5,10 @@ import pandas as pd
 from dns.inet import inet_pton
 from aligment_files import comparison
 from chromosomes_dict import *
-from configobj import ConfigObj
 from rich.console import Console
 import json
 
 final_results = []
-config = ConfigObj("./config.config", interpolation="Template")
 console = Console(highlight=False)
 _pickle_cache = {}  # load pkl only once
 

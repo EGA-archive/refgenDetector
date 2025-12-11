@@ -85,8 +85,7 @@ def run_main(args):
             console.print("[bold]File type:[/bold] BAM/CRAM") 
             process_data_bamcram(args.file, args.md5, args.assembly)
     except OSError:
-        console.print(f"[red]The file {args.file} provided in --file can't be opened. Make sure to include the path "
-                      f"to a txt file formed by paths to headers saved in txts or to BAM/CRAMs files (one per line)[/red]"
+        console.print(f"[red]The file {args.file} provided in --file can't be opened."
                       f"\nRun [bold]refgenDetector -h[/bold] to get more information about the usage of the tool.")
     console.print(f"---")
 
@@ -98,7 +97,7 @@ def main():
     parser.add_argument("--md5", action="store_true", help="Print md5 values if present in header.")
     parser.add_argument("-a", "--assembly", action="store_true", help="Print assembly if present in header.")
     parser.add_argument("-v", "--max_n_var", type=int, help="Maximum number of variants to read before stopping inference. The file is processed in chunks of 100,000 variants, so this value must be a multiple of 100,000 (e.g. 100000, 200000, 300000, ...).") 
-    parser.add_argument("-m", "--matches", type=int, default=5000, help="Number of matches required before stopping.")
+    parser.add_argument("-m", "--matches", type=int, default=5000, help="Number of matches required before stopping. [DEFAULT:5000]")
     parser.add_argument("-r", "--resources", action="store_true",
                         help="When set, print execution time, CPU, memory, and disk I/O usage.")
     args = parser.parse_args()
