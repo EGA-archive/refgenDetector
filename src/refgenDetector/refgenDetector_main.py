@@ -80,7 +80,7 @@ def run_main(args):
             process_data_txt(args.file, args.md5, args.assembly)
         elif args.type in ["VCF"]:
             console.print("[bold]File type:[/bold] VCF") 
-            open_vcf(args.file, args.matches)
+            open_vcf(args.file, args.matches, args.max_n_var)
         else:
             console.print("[bold]File type:[/bold] BAM/CRAM") 
             process_data_bamcram(args.file, args.md5, args.assembly)
@@ -97,10 +97,8 @@ def main():
                         help="Type of files to analyze.")
     parser.add_argument("--md5", action="store_true", help="Print md5 values if present in header.")
     parser.add_argument("-a", "--assembly", action="store_true", help="Print assembly if present in header.")
-    parser.add_argument("-c", "--chunks", type=int, default=10000000000000000000000000,
-                        help="Number of chunks to read (for VCF/BIM).") ## TODO delete this
-    parser.add_argument("-m", "--matches", type=int, default=5000,
-                        help="Number of matches required before stopping.")
+    parser.add_argument("-v", "--max_n_var", type=int, help="Maximum number of variants to read before stopping inference. The file is processed in chunks of 100,000 variants, so this value must be a multiple of 100,000 (e.g. 100000, 200000, 300000, ...).") 
+    parser.add_argument("-m", "--matches", type=int, default=5000, help="Number of matches required before stopping.")
     parser.add_argument("-r", "--resources", action="store_true",
                         help="When set, print execution time, CPU, memory, and disk I/O usage.")
     args = parser.parse_args()

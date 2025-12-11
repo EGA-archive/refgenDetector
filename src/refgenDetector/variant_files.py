@@ -121,40 +121,86 @@ def read_and_load(chunk):
     return gVCF
 
 
-def read_chunks(complete_file, cols):
-    """Loads the file in batches to avoid loading completely on memory. If there are enough matches to define the
-    version, the loop will stop. If it has loaded more chunks than desired, the loop breaks too. For bim files,
-    the inferred version must have at least 50% of the matches"""
-    counter = 0
+def read_chunks(complete_file, cols, n_matches=None, max_n_var=None):
+    """
+    Loads the file in batches to avoid loading it completely in memory.
+    By default, all variants are read.
+
+    If `min_matches` is provided (e.g. via -m in argparse), the file will be
+    read in chunks until the total number of SNP matches reaches or exceeds
+    `min_matches`. At that point the loop stops and the inference is done
+    with the matches collected so far.
+
+    Args:
+        complete_file (str): path to the file to read
+        cols (list[int]): column indices to load
+        min_matches (int | None): total number of matches required before
+                                  stopping early. If None, read all chunks.
+    """
+    chunk_counter = 0
     results = {}
-    gVCF = False  # make sure the gVCF always exists
+    gVCF = False  # track if any chunk looks like gVCF
+
     try:
-        for chunk in pd.read_csv(complete_file, sep="\t", comment='#', header=None, chunksize=100000, usecols=cols):
-            gVCF = read_and_load(chunk)
+
+        for chunk in pd.read_csv(complete_file, sep="\t", comment="#", header=None, chunksize=100000, usecols=cols,):
+            chunk_counter = chunk_counter+100000
+            # Update global gVCF flag if any chunk reports True
+            chunk_gvcf = read_and_load(chunk)
+            gVCF = gVCF or chunk_gvcf
+
+            # Update global results 
             results = gather_and_sum(final_results)
 
+            # If user requested an early stop based on number of variants read
+            if max_n_var is not None: 
+                try:
+                    if chunk_counter > max_n_var:
+                        break
+                except ValueError:
+                        console.print("0 FP SPNs in this chunk", style="bold")
+
+            # If user requested an early stop based on number of matches
+
+            if n_matches is not None:
+                results_matches = sum(results.values()) if results else 0
+                if n_matches < results_matches:
+                    # Enough evidence; stop reading more chunks
+                    break
+            
+
     finally:
+        # Inference and messages
         try:
-            if max(results.values()) == 0:
+            if not results or max(results.values()) == 0:
                 console.print("No SNPs found to infer the reference genome.", style="bold red")
             else:
-                if max(results.values()) > sum(results.values())/2:
-                    console.print(f"[bold]Inferred Reference genome:[/bold]", max(results, key=results.get))
+                best_ref = max(results, key=results.get)
+                best_matches = results[best_ref]
+                total_matches = sum(results.values())
 
+                if best_matches > total_matches / 2:
+                    console.print(
+                        f"[bold]Inferred Reference genome:[/bold] {best_ref}"
+                    )
                 else:
-                    console.print("Some of the versions have more than 50% of the total matches.  [bold] Reference "
-                                  "genome version unknown. m", style="red")
+                    console.print(
+                        "None of the versions has more than 50% of the total matches. "
+                        "[bold]Reference genome version unknown.[/bold]",
+                        style="red",
+                    )
 
-        except ValueError as e:
+        except ValueError:
+            # Covers cases like max([]) or similar
             console.print("No SNPs found to infer the reference genome.", style="bold red")
-    
-    if gVCF == True:
-        console.print(f"[bold]gVCF by ALT column[/bold]") 
 
-def extract_columns(complete_file):
+    if gVCF:
+        console.print(f"[bold]gVCF by ALT column[/bold]")
+
+def extract_columns(complete_file, n_matches, max_n_var):
     "Loads only the interesting columns"
     cols = [0, 1, 3, 4] # chr pos ref alt
-    read_chunks(complete_file, cols)
+    read_chunks(complete_file, cols, n_matches, max_n_var)
 
 def get_n_samples(header):
 
@@ -214,7 +260,7 @@ def extract_header(complete_file, input_file):
 
     
 
-def open_vcf(input_file, n_matches):
+def open_vcf(input_file, n_matches, max_n_var):
 
     formats = ("vcf")
     compressed_formats = ("vcf.gz")
@@ -222,12 +268,12 @@ def open_vcf(input_file, n_matches):
     if input_file.endswith(compressed_formats):
         with gzip.open(input_file, "rt") as complete_file:
             extract_header(complete_file, input_file)
-            extract_columns(complete_file)
+            extract_columns(complete_file, n_matches, max_n_var)
 
     elif input_file.endswith(formats):
         with open(input_file, "rt") as complete_file:
             extract_header(complete_file, input_file)
-            extract_columns(complete_file)
+            extract_columns(complete_file, n_matches, max_n_var)
 
 
 
