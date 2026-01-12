@@ -24,8 +24,8 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 
-from refgenDetector.reference_genome_dictionaries import *
-from refgenDetector.exceptions.NoFileException import *
+from reference_genome_dictionaries import *
+from exceptions.NoFileException import *
 from aligment_files import *
 from variant_files import *
 
