@@ -103,10 +103,15 @@ def comparison(dict_SN_LN, target_file):
                 incosistency = check_if_decoy(matches_info, target_file)
 
     if incosistency == False:
-
         if max_match[0] == 0:
-            console.print(f"[bold][red]Reference genome can't be inferred[/bold] - "
+            for contig in dict_SN_LN.values(): 
+                if contig not in mit_contigs.values(): 
+                    console.print(f"[bold][red]Reference genome can't be inferred[/bold] - "
                           "The contigs in the file are not found in refgenDetector database[red]")
+                else: 
+                    ref_version = next(key for key, value in mit_contigs.items() if value == contig)
+                    console.print(f"[bold]Species detected:[/bold] Homo sapiens \n[bold]Reference genome version  :[/bold] {ref_version}")
+                    console.print(f"Note: Only the mitochondrial reference sequence is present. Nuclear genome build cannot be determined.")
 
         elif max_match[1] == "GRCh37": #check for GRCh37 flavors
 
@@ -135,7 +140,7 @@ def comparison(dict_SN_LN, target_file):
                               f"Reference genome version  :[/bold] GRCh38_no_alt_plus_hs38d1")
             else: # if no GRCh38 flavor is inferred, the major release is printed
                 console.print(f"[bold]Species detected:[/bold] Homo sapiens \n["
-                              f"bold]Reference genome version  :[/bold] GRCh38")
+                              f"bold]Reference genome version  :[/bold] GRCh38")        
         else: # print the major releases with no considered flavors.
             console.print(f"[bold]Species detected:[/bold] {match[2]} "
                   f"\n[bold]Reference genome version   (inferred from header) :[/bold] {match[1]}")
@@ -243,8 +248,6 @@ def process_data_txt(target_file, md5, assembly):
     Returns:
         header_txt (io.TextIOWrapper): text object
     """
-    console.print(f"[bold]\n ++ INFORMATION INFERRED BY THE HEADER[/bold] ++\n")
-    console.print(f"[bold]File:[/bold] {target_file}")
     try:
         if os.path.isfile(target_file):
             with open(target_file, "r") as header_txt:
