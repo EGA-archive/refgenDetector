@@ -2,6 +2,9 @@
 
 """ reference_genome_dictionaries.py: repository with the unique contigs for each reference genome to be inferred"""
 
+import json
+from pathlib import Path
+
 __author__ = "Mireia Marin Ginestar"
 __version__ = "2.0"
 __maintainer__ = "Mireia Marin Ginestar"
@@ -691,6 +694,7 @@ Sscrofa11_1 = {
 ## Lists and dictionaries for comparison()
 #major_releases = {"hg16": hg16, "hg17": hg17, "hg18": hg18, "GRCh37": GRCh37, "GRCh38": GRCh38, "T2T": T2T}
 
+
 major_releases = {"hg16": {"ref_gen": hg16, "build": "hg16", "species": "Homo sapiens"},
                   "hg17": {"ref_gen": hg17, "build": "hg17", "species": "Homo sapiens"},
                   "hg18": {"ref_gen": hg18, "build": "hg18", "species": "Homo sapiens"},
@@ -703,7 +707,7 @@ major_releases = {"hg16": {"ref_gen": hg16, "build": "hg16", "species": "Homo sa
                   "mm10": {"ref_gen": mm10, "build": "mm10", "species": "Mus musculus"},
                   "mm39": {"ref_gen": mm39, "build": "mm39", "species": "Mus musculus"},
                   "dm5": {"ref_gen": dm5, "build": "dm5", "species": "Drosophila Melanogaster"},
-                  "dm6": {"ref_gen": dm6, "build": "dm6", "species": "Drosophila Melanogaster"},
+                  #"dm6": {"ref_gen": dm6, "build": "dm6", "species": "Drosophila Melanogaster"},
                   "danRer10": {"ref_gen": danRer10, "build": "danRer10", "species": "Danio Rerio"},
                   "danRer11": {"ref_gen": danRer11, "build": "danRer11", "species": "Danio Rerio"},
                   "WBcel215": {"ref_gen": WBcel215, "build": "WBcel215", "species": "Caenorhabditis elegans"},
@@ -724,6 +728,15 @@ major_releases = {"hg16": {"ref_gen": hg16, "build": "hg16", "species": "Homo sa
                   "Sscrofa11_1": {"ref_gen": Sscrofa11_1, "build": "Sscrofa11_1", "species": "Sus scrofa"}
                   }
 
+## Add custom references if present 
+
+CUSTOM_DB = Path("custom_references.json")
+
+if CUSTOM_DB.exists():
+    with open(CUSTOM_DB) as f:
+        custom_refs = json.load(f)
+
+    major_releases.update(custom_refs)
 
 flavors_GRCh37 = {"b37":  {"ref_gen": b37, "build": "b37", "species": "Homo sapiens"},
                   "hs37d5": {"ref_gen": hs37d5, "build": "hs37d5", "species": "Homo sapiens"},
@@ -801,4 +814,7 @@ def get_min_values():
         min_values[name] = d[min(d, key=d.get)]  # Store min value
 
     print(min_values)  # Output the dictionary
+
+
+
 

@@ -108,6 +108,7 @@ def comparison(dict_SN_LN, target_file):
                 if contig not in mit_contigs.values(): 
                     console.print(f"[bold][red]Reference genome can't be inferred[/bold] - "
                           "The contigs in the file are not found in refgenDetector database[red]")
+                    break
                 else: 
                     ref_version = next(key for key, value in mit_contigs.items() if value == contig)
                     console.print(f"[bold]Species detected:[/bold] Homo sapiens \n[bold]Reference genome version  :[/bold] {ref_version}")
@@ -143,7 +144,7 @@ def comparison(dict_SN_LN, target_file):
                               f"bold]Reference genome version  :[/bold] GRCh38")        
         else: # print the major releases with no considered flavors.
             console.print(f"[bold]Species detected:[/bold] {match[2]} "
-                  f"\n[bold]Reference genome version   (inferred from header) :[/bold] {match[1]}")
+                  f"\n[bold]Reference genome version:[/bold] {match[1]}")
 
 
 

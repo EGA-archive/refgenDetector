@@ -8,14 +8,23 @@ from chromosomes_dict import *
 from rich.console import Console
 import json
 import os
+import numpy as np 
+import msgpack
+import pysam 
 
 final_results = []
 console = Console(highlight=False)
-_pickle_cache = {}  # load pkl only once
-PKL_DIR = os.path.join(os.path.dirname(__file__), "pkls")
+_msgpack_cache = {}
+MSGPACK_DIR = "./msgpacks"
 
 def gather_and_sum(lists):
-    """It gathers and sums all the matches calculated in get_matches()"""
+    """
+    It gathers and sums all the matches calculated in get_matches()
+    Args:
+        lists: list of lists with the matches calculated in get_matches() for each chunk.
+    Returns:
+        A dictionary with the total number of matches for each version, which is used to infer the reference genome version.
+    """
     cumulative_sums = {}
     for lst in lists:
         for key, value in lst:
@@ -26,49 +35,58 @@ def gather_and_sum(lists):
     console.print(f"[bold]Matches: [/bold]", cumulative_sums)
     return cumulative_sums
 
-
-def get_matches(snps, chr):
-    """ Loads the pkl file depending on the chr that are present on the chunk. Compares the reference column from our
-     input file and from the pkls, the number of matches to each version are returned to read_chunks()"""
-    global _pickle_cache
+def get_matches(snps_dict, chr_):
+    """
+    For each chromosome, it looks for the matches of the SNPs in the corresponding msgpack files, 
+    which contain the reference genome information for each version. It returns a list with the number of matches for each version.
+    Args:        
+        snps_dict: dictionary with the position and the nucleotide of the SNPs in the chunk being processed. 
+        chr_: chromosome of the chunk being processed, used to load the corresponding msgpack and get the matches.
+    Returns:
+        A list with the number of matches for each version, which is used to infer the reference genome version.
+    """
+    
+    global _msgpack_cache
     start = time.time()
+
     genome_versions = ["hg18", "GRCh37", "GRCh38", "T2T"]
     matches = []
-    
-    if not os.path.isdir(PKL_DIR):
-        console.print(
-            f"[bold red]Error:[/bold red] Required directory not found: {PKL_DIR}\n Execution aborted. \n"
-            "If you haven't downloaded yet the pkl folder: https://crgcnag-my.sharepoint.com/:u:/g/personal/mimarin_crg_es/IQByWKuqxkRMR7IfzwTy6CFiAf5Lleoa9V8QnKi3ByJPzHU?e=fbcfUh"
-        )
-        sys.exit(1)   # Hard stop (cleaner than raising inside loops)
-    
-    # Load and check sequentially
+
+    # Extract arrays once
+    positions = np.array(list(snps_dict.keys()), dtype=np.int64)
+    nucleotides = np.array(list(snps_dict.values()))
+
     for version_name in genome_versions:
-        cache_key = f"{version_name}-{chr}"
-        if cache_key not in _pickle_cache:
-            try:
-                _pickle_cache[cache_key] = pd.read_pickle(f"./pkls/{cache_key}.pkl")
-            except FileNotFoundError:
+        cache_key = f"{version_name}-{chr_}"
+
+        if cache_key not in _msgpack_cache:
+            path = f"{MSGPACK_DIR}/{cache_key}.msgpack"
+            if not os.path.exists(path):
                 continue
-        
-        version_df = _pickle_cache[cache_key]
-        try:
-            version_df = pd.read_pickle(f"./pkls/{version_name}-{chr}.pkl")
-            merged_df = version_df.join(snps.set_index('position'), how='inner')
-            matches_count = int((merged_df['nucleotide'] == merged_df[version_name]).sum())
-            matches.append([version_name, matches_count])
+            with open(path, "rb") as f:
+                _msgpack_cache[cache_key] = msgpack.load(f, raw=False, strict_map_key=False)
 
-        except FileNotFoundError as e:
-            console.print(f"Warning: {version_name}-{chr}.pkl not found")
-            continue
+        ref_dict = _msgpack_cache[cache_key]
 
-    #console.print("Getting matches. Took:", time.time() - start, "s")
+        # Vectorized: look up all positions at once, compare arrays
+        ref_nucs = np.array([ref_dict.get(p, None) for p in positions])
+        match_count = int(np.sum(ref_nucs == nucleotides))
 
+        matches.append([version_name, match_count])
+
+    console.print("Getting matches. Took:", time.time() - start, "s")
     return matches
 
 
 def trimming_indels(content, ref):
-    """If a row is longer than one position it is deleted, deleting this way any indels"""
+    """
+    If a row is longer than one position it is deleted, deleting this way any indels
+    Args:
+        content: chunk of the file being read, containing the variants information. It must only contain SNPs, as indels are trimmed in this function.
+        ref: column number of the reference allele in the file, which is different in vcfs and bim files. 
+    Returns:
+        A dataframe with only the SNPs in the chunk, and the gVCF status of the chunk.
+    """
     try:
          # Keep only rows where REF is length 1 or <NON_REF>
         del_insertions = content[(content.iloc[:, 2].str.len() == 1) | (content.iloc[:, 2] == '<NON_REF>')]
@@ -96,13 +114,20 @@ def trimming_indels(content, ref):
 
 
 def call_trimming(content, chr):
-    """ The file must only contain SNPs. This function is necessary because the reference column has a different
-    number in vcfs and in bim files """
+    """ 
+    The file must only contain SNPs. This function is necessary because the reference column has a different number in vcfs and in bim files 
+    Args:   
+        content: chunk of the file being read, containing the variants information. It must only contain SNPs, as indels are trimmed in the function.
+        chr: chromosome of the chunk being processed, used to load the corresponding msgpack and get the matches.
+    Returns:
+        Calls get_matches() with the SNPs in the chunk, and adds the matches to the global variable final_results. It also returns the gVCF status of the chunk, which is True if any of the variants in the chunk has <NON_REF> in the ALT column, and False otherwise.
+    """
 
     snps, gVCF = trimming_indels(content, 2)  # content : chr pos ref alt
 
     if len(snps) != 0:
-        results = get_matches(snps, chr)
+        snps_dict = dict(zip(snps["position"].astype(int), snps["nucleotide"]))
+        results = get_matches(snps_dict, chr)  # pass dict, not DataFrame
         final_results.append(results)
     else:
         console.print("There aren't FP SNPs in this chunk", style="bold red")
@@ -111,10 +136,14 @@ def call_trimming(content, chr):
 
 
 def read_and_load(chunk):
-    """To avoid loading a big pkl with information from all the chromosomes we first check which chr are there in
-    the current chunk and then load only the necessary pkls
     """
-    
+    Check the chromosome in the chunk and load only the msgpacks corresponding to that chromosome, 
+    then call the function to trim indels and get the matches.
+    Args:
+        chunk: chunk of the file being read, containing the variants information. It must only contain SNPs, as indels are trimmed in the function.
+    Returns:
+        The gVCF status of the chunk, which is True if any of the variants in the chunk has <NON_REF> in the ALT column, and False otherwise.
+    """
     for chromosome, group_content in chunk.groupby(chunk.columns[0]):
         chromosome_str = str(chromosome)
         if chromosome_str in chromosome_map:
@@ -133,16 +162,18 @@ def read_chunks(complete_file, cols, n_matches=None, max_n_var=None):
     Loads the file in batches to avoid loading it completely in memory.
     By default, all variants are read.
 
-    If `min_matches` is provided (e.g. via -m in argparse), the file will be
+    If `n_matches` is provided (e.g. via -m in argparse), the file will be
     read in chunks until the total number of SNP matches reaches or exceeds
-    `min_matches`. At that point the loop stops and the inference is done
+    `n_matches`. At that point the loop stops and the inference is done
     with the matches collected so far.
 
     Args:
         complete_file (str): path to the file to read
         cols (list[int]): column indices to load
-        min_matches (int | None): total number of matches required before
+        n_matches (int | None): total number of matches required before
                                   stopping early. If None, read all chunks.
+    Returns:
+        Chunks of 100.000 variants for the inference, until the stopping condition is met (if any).
     """
     chunk_counter = 0
     results = {}
@@ -204,12 +235,29 @@ def read_chunks(complete_file, cols, n_matches=None, max_n_var=None):
     if gVCF:
         console.print(f"[bold]gVCF by ALT column[/bold]")
 
-def extract_columns(complete_file, n_matches, max_n_var):
-    "Loads only the interesting columns"
+
+def extract_columns(complete_file,  n_matches, max_n_var):
+    """
+    Extracts the columns of interest (chr, pos, ref, alt) and sends them to be processed. The inference is done with the matches collected until the stopping condition is met (if any).
+    Args:        
+        complete_file: opened file with the header
+        n_matches: stop reading more chunks once the total number of matches reaches this value. By default, 5000 matches are required before stopping.
+        max_n_var: stop reading more chunks once the total number of variants read exceeds this value. If None, read all chunks.    
+    Returns:
+        Calls the function to read the file in chunks and process them, with the columns of interest.
+    """
+
     cols = [0, 1, 3, 4] # chr pos ref alt
-    read_chunks(complete_file, cols, n_matches, max_n_var)
+    read_chunks(complete_file, cols,  n_matches, max_n_var)
 
 def get_n_samples(header):
+    """
+    Counts the number of samples in the VCF file by looking at the last header line. 
+    Args:        
+        header: list of lines in the header of the VCF file
+    Returns:
+        The number of samples in the VCF file, inferred by the last header line. 
+    """
 
     mandatory_columns = ["#CHROM", "POS", "ID", "REF", "ALT", "QUAL", "FILTER", "INFO", "FORMAT"] #fixed fields for variant information
     columns = header[-1].split("\t")
@@ -223,6 +271,15 @@ def get_n_samples(header):
         console.print(f"[bold]Number of samples: [/bold]1")
 
 def start_refgen_header(header, target_file):
+    """
+    Parses the information of the VCF header. If the contig information is present, it is used to infer the reference genome. 
+    If not, a message is printed and the inference is done with the variants information. If the gVCF tag is present in the header, it is also reported.
+    Args:        
+        header: list of lines in the header of the VCF file
+        target_file: path of the input file, used for the messages
+    Returns:
+        The reference genome inferred by the contig header information, if the file is gVCF according to the header
+    """
 
     contig_list = [line for line in header if '##contig' in line and 'length' in line]
     if len(contig_list)!=0:
@@ -254,7 +311,14 @@ def start_refgen_header(header, target_file):
         
 
 def extract_header(complete_file, input_file):
-    "Extracts header and send it to match the refgenDetector database"
+    """
+    If present, extracts header and send it to match the refgenDetector database
+    Args:        
+        complete_file: opened file with the header
+        Input_file: path of the input file, used for the messages
+    Returns:
+        The reference genome inferred by the contig header information 
+    """
     header = []
     for line in complete_file:
         if line.startswith('#'):
@@ -268,9 +332,19 @@ def extract_header(complete_file, input_file):
     
 
 def open_vcf(input_file, n_matches, max_n_var):
+    """
+    Parse arguments and open the input VCF, compressed or not.
+    Args:
+         input_file: path of the input file
+         n_matches (int | None): if provided, the function will stop reading more chunks once the total number of matches reaches. By default, 5000 matches are required before stopping. 
+         max_n_var (int | None): if provided, the function will stop reading more chunks once the total number of variants read exceeds this value. If None, read all chunks.
+
+    Returns:
+        Calls the function to extract the header and the function to extract the columns of interest and infer the reference genome. The inference is done with the matches collected until the stopping condition is met (if any).
+    """
 
     formats = ("vcf")
-    compressed_formats = ("vcf.gz")
+    compressed_formats = ("vcf.gz") ##TODO whem bgz read_chunks and possible read_and_load take a long time
 
     if input_file.endswith(compressed_formats):
         with gzip.open(input_file, "rt") as complete_file:
@@ -281,6 +355,8 @@ def open_vcf(input_file, n_matches, max_n_var):
         with open(input_file, "rt") as complete_file:
             extract_header(complete_file, input_file)
             extract_columns(complete_file, n_matches, max_n_var)
+    else: 
+        console.print(f"[bold][red] Only Formats Allowed: vcf and vcf.gz [/red][/bold]")
 
 
 

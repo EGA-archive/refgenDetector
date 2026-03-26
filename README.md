@@ -88,6 +88,48 @@ RefgenDetector is able to infer the following reference genomes:
 
 - R64
 
+## `ref_manager.py` - Customize the assemblies database. 
+
+`ref_manager.py` provides command-line management of reference genomes used by RefgenDetector. It allows users to add custom assemblies from FASTA index (`.fai`) files, list all available references, and remove previously added custom entries without modifying the source code.
+
+### Usage
+
+```bash
+python ref_manager.py <command> [options]
+```
+
+### Commands
+
+#### Add a reference
+
+```bash
+python ref_manager.py add <genome.fai> <reference_name> <species>
+```
+
+Registers a new reference from a valid `.fai` file. If the contig structure matches an existing reference, the entry is not added.
+
+#### List references
+
+```bash
+python ref_manager.py list
+```
+
+Displays all available references, including both built-in and user-defined assemblies.
+
+#### Remove a reference
+
+```bash
+python ref_manager.py remove <reference_name>
+```
+
+Removes a custom reference from the local database. Built-in references cannot be removed.
+
+### Notes
+
+- Custom references are stored separately from the default reference database.
+- Input files must be valid FASTA index files generated with `samtools faidx`.
+- Duplicate assemblies are detected based on exact contig composition.
+
 ## Variant Calling Files (VCFs)
 
 From VCF files only 4 human assemblies can be inferred: 
