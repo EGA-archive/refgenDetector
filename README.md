@@ -147,9 +147,9 @@ In the VCF specification it is recommended, but **not mandatory** that the VCF h
 
 * **Variants**
 
-To infer the reference genome from a VCF the tool will read the VCF file in chunks of 100.000 variants, avoiding to load the complete file in memory. The `POS` and `REF` columns will be extracted and compared to the pkl files.
+To infer the reference genome from a VCF the tool will read the VCF file in chunks of 100.000 variants, avoiding to load the complete file in memory. The `POS` and `REF` columns will be extracted and compared to the msgpack files.
 
-The pkl files were created comparing the nucleotides in each position for hg18, GRCh37, GRCh38 and T2T. Each file contains a list of the positions where each reference had a different nucleotide (distinguishing positions). 
+The msgpack files were created comparing the nucleotides in each position for hg18, GRCh37, GRCh38 and T2T. Each file contains a list of the positions where each reference had a different nucleotide (distinguishing positions). 
 
 By getting the number of matches between these distinguishing positions and the `REF` present in the VCF we infer the reference genome version used to call the variants. 
 
@@ -162,15 +162,15 @@ Depending on how you want to install the package:
 - pip
 - Docker
 
-Download the PKL files for the inference with VCFs: 
+Download the `msgpack` files for the inference with VCFs: 
 
-1. [Download the pkl reference](https://crgcnag-my.sharepoint.com/:u:/g/personal/mimarin_crg_es/IQByWKuqxkRMR7IfzwTy6CFiAUdAcXVkFH7IYQMj8wwrYTs?e=rt8p19)
+1. [Download the msgpack reference](https://crgcnag-my.sharepoint.com/:u:/g/personal/mimarin_crg_es/IQDa5CICZDAoRZmbfhBG3ZPEAWdVnNqvefFJB_r5Hc8aM70?e=kID7zn)
 
-2. Move the pkls to the correct path:
+2. Move the `msgpack` to the correct path:
 
 ```
-mv pkls.zip /refgenDetector/src/refgenDetector/
-unzip /refgenDetector/src/refgenDetector/pkls.zip
+mv msgpack.zip /refgenDetector/src/refgenDetector/
+unzip /refgenDetector/src/refgenDetector/msgpack.zip
 ```
 
 ## Installation
@@ -186,6 +186,9 @@ unzip /refgenDetector/src/refgenDetector/pkls.zip
 ### From pypi
 
 ``$ pip install refgenDetector``
+
+### From Docker 
+``
 
 ## Usage
 
