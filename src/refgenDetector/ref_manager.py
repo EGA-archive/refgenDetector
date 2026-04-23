@@ -1,7 +1,13 @@
 import sys
 import json
 from pathlib import Path
-from reference_genome_dictionaries import major_releases
+try:
+    # Works when installed as a pip package
+    from .reference_genome_dictionaries import *
+except ImportError:
+    # Works when run directly as a script
+    from reference_genome_dictionaries import *
+
 
 DEFAULT_MAJOR_RELEASES = dict(major_releases)
 
