@@ -82,7 +82,7 @@ def get_matches(snps_dict, chr_):
 
         matches.append([version_name, match_count])
 
-    console.print("Getting matches. Took:", time.time() - start, "s")
+    #console.print("Getting matches. Took:", time.time() - start, "s")
     return matches
 
 

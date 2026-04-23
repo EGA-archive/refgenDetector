@@ -103,7 +103,8 @@ python ref_manager.py <command> [options]
 #### Add a reference
 
 ```bash
-python ref_manager.py add <genome.fai> <reference_name> <species>
+python ref_manager.py add <genome.fai> <reference_name> <species> # script
+refgenDetector-manager add <genome.fai> <reference_name> <species> # pip installation
 ```
 
 Registers a new reference from a valid `.fai` file. If the contig structure matches an existing reference, the entry is not added.
@@ -111,7 +112,8 @@ Registers a new reference from a valid `.fai` file. If the contig structure matc
 #### List references
 
 ```bash
-python ref_manager.py list
+python ref_manager.py list # scripts
+refgenDetector-manager list # pip installation
 ```
 
 Displays all available references, including both built-in and user-defined assemblies.
@@ -119,7 +121,8 @@ Displays all available references, including both built-in and user-defined asse
 #### Remove a reference
 
 ```bash
-python ref_manager.py remove <reference_name>
+python ref_manager.py remove <reference_name> # scripts
+refgenDetector-manager remove <reference_name> # pip installation
 ```
 
 Removes a custom reference from the local database. Built-in references cannot be removed.
@@ -162,17 +165,6 @@ Depending on how you want to install the package:
 - pip
 - Docker
 
-Download the `msgpack` files for the inference with VCFs: 
-
-1. [Download the msgpack reference](https://crgcnag-my.sharepoint.com/:u:/g/personal/mimarin_crg_es/IQDa5CICZDAoRZmbfhBG3ZPEAWdVnNqvefFJB_r5Hc8aM70?e=kID7zn)
-
-2. Move the `msgpack` to the correct path:
-
-```
-mv msgpack.zip /refgenDetector/src/refgenDetector/
-unzip /refgenDetector/src/refgenDetector/msgpack.zip
-```
-
 ## Installation
 
 ### Cloning this repository
@@ -183,12 +175,19 @@ unzip /refgenDetector/src/refgenDetector/msgpack.zip
 
 3. ``$ python3 refgenDetector_main.py -h ``
 
+4. Download the `msgpack` files for the inference with VCFs: [Download the msgpack reference](https://crgcnag-my.sharepoint.com/:u:/g/personal/mimarin_crg_es/IQDa5CICZDAoRZmbfhBG3ZPEAWdVnNqvefFJB_r5Hc8aM70?e=kID7zn)
+
+5. Move the `msgpack` to the correct path:
+
+```
+mv msgpacks.zip /refgenDetector/src/refgenDetector/
+unzip /refgenDetector/src/refgenDetector/msgpacks.zip
+```
+
 ### From pypi
 
 ``$ pip install refgenDetector``
 
-### From Docker 
-``
 
 ## Usage
 

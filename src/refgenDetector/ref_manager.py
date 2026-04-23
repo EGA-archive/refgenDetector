@@ -11,14 +11,10 @@ except ImportError:
 
 DEFAULT_MAJOR_RELEASES = dict(major_releases)
 
-CUSTOM_DB = Path("custom_references.json")
+CUSTOM_DB = Path.home() / ".refgenDetector" / "custom_references.json"
 
-if CUSTOM_DB.exists():
-    with open(CUSTOM_DB) as f:
-        custom_refs = json.load(f)
-
-    major_releases.update(custom_refs)
-
+# make sure the directory exists
+CUSTOM_DB.parent.mkdir(parents=True, exist_ok=True)
 
 def load_from_fai(file_path):
     """

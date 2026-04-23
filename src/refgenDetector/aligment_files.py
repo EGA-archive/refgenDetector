@@ -14,8 +14,8 @@ try:
     from .exceptions.NoFileException import *
 except ImportError:
     # Works when run directly as a script
-    from refgenDetector.reference_genome_dictionaries import *
-    from refgenDetector.exceptions.NoFileException import *
+    from reference_genome_dictionaries import *
+    from exceptions.NoFileException import *
 
 console = Console()
 

@@ -23,6 +23,7 @@ setup(
     entry_points={
         'console_scripts': [
             'refgenDetector=refgenDetector.refgenDetector_main:main',
+            'refgenDetector-manager=refgenDetector.ref_manager:main'
         ],
     },
     packages=find_packages(where='src'),
