@@ -3,12 +3,12 @@
 """ refgenDetector.py: Script to infer the reference genome used to create a BAM or CRAM"""
 
 __author__ = "Mireia Marin Ginestar"
-__version__ = "2.0"
+__version__ = "3.0.1"
 __maintainer__ = "Mireia Marin Ginestar"
 __email__ = "mireia.marin@crg.eu"
 __status__ = "Developement"
 
-version = "2.0.0"
+version = "3.0.1"
 
 import os
 import sys
@@ -18,16 +18,18 @@ import pysam
 import psutil
 import time
 from rich.console import Console
-
-# Add the parent directory to the Python path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, parent_dir)
-
-from reference_genome_dictionaries import *
-from exceptions.NoFileException import *
-from aligment_files import *
-from variant_files import *
+try:
+    # Works when installed as a pip package
+    from .reference_genome_dictionaries import *
+    from .exceptions.NoFileException import *
+    from .aligment_files import *
+    from .variant_files import *
+except ImportError:
+    # Works when run directly as a script
+    from reference_genome_dictionaries import *
+    from exceptions.NoFileException import *
+    from aligment_files import *
+    from variant_files import *
 
 console = Console()
 

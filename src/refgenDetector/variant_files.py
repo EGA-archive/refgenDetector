@@ -3,14 +3,20 @@ import sys
 import time
 import pandas as pd
 from dns.inet import inet_pton
-from aligment_files import comparison
-from chromosomes_dict import *
 from rich.console import Console
-import json
 import os
 import numpy as np 
 import msgpack
-import pysam 
+try:
+    # Works when installed as a pip package
+    from .aligment_files import *
+    from .chromosomes_dict import *
+except ImportError:
+    # Works when run directly as a script
+    from aligment_files import comparison
+    from chromosomes_dict import *
+
+
 
 final_results = []
 console = Console(highlight=False)
