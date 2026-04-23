@@ -176,3 +176,4 @@ cython_debug/
 # files too big
 /src/refgenDetector/pkls
 /src/refgenDetector/msgpacks*
+/refgendetector-3.0.4

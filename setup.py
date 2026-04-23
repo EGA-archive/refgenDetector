@@ -4,7 +4,7 @@ from pathlib import Path
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
-VERSION = '3.0.2'
+VERSION = '3.0.4'
 DESCRIPTION = 'RefgenDetector'
 
 setup(
@@ -27,5 +27,5 @@ setup(
     },
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
-    package_data={"refgenDetector": ["*.msgpack"]}
+    package_data={"refgenDetector": ["msgpacks/*.msgpack"]}
 )

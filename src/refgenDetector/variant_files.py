@@ -16,12 +16,14 @@ except ImportError:
     from aligment_files import comparison
     from chromosomes_dict import *
 
+# Works both when installed as a pip package and when run directly as a script
+MSGPACK_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "msgpacks")
+
 
 
 final_results = []
 console = Console(highlight=False)
 _msgpack_cache = {}
-MSGPACK_DIR = "./msgpacks"
 
 def gather_and_sum(lists):
     """
@@ -66,7 +68,7 @@ def get_matches(snps_dict, chr_):
         cache_key = f"{version_name}-{chr_}"
 
         if cache_key not in _msgpack_cache:
-            path = f"{MSGPACK_DIR}/{cache_key}.msgpack"
+            path = os.path.join(MSGPACK_DIR, f"{cache_key}.msgpack")
             if not os.path.exists(path):
                 continue
             with open(path, "rb") as f:
