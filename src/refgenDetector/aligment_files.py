@@ -1,11 +1,5 @@
 import os
 import sys
-# Add the parent directory to the Python path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, parent_dir)
-from refgenDetector.reference_genome_dictionaries import *
-from refgenDetector.exceptions.NoFileException import *
 import argparse
 import csv
 import gzip
@@ -13,6 +7,15 @@ import pysam
 import psutil
 import time
 from rich.console import Console
+
+try:
+    # Works when installed as a pip package
+    from .reference_genome_dictionaries import *
+    from .exceptions.NoFileException import *
+except ImportError:
+    # Works when run directly as a script
+    from refgenDetector.reference_genome_dictionaries import *
+    from refgenDetector.exceptions.NoFileException import *
 
 console = Console()
 
