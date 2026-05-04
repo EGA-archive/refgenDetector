@@ -24,14 +24,17 @@ try:
     from .exceptions.NoFileException import *
     from .aligment_files import *
     from .variant_files import *
+    from .download_data import get_refgen_data
 except ImportError:
     # Works when run directly as a script
     from reference_genome_dictionaries import *
     from exceptions.NoFileException import *
     from aligment_files import *
     from variant_files import *
+    from download_data import get_refgen_data   
 
 console = Console()
+
 
 
 def monitor_resources(func):
@@ -73,6 +76,8 @@ def monitor_resources(func):
 def run_main(args):
     """Main logic of the tool (isolated from CLI parsing)."""
     console.print(f"[bold]* Running refgenDetector v.{version} *[/bold]")
+    msgpacks_dir = get_refgen_data() # msgpacks available
+    print(f"Reference files ready at: {msgpacks_dir}")
     console.print(f"---")
     console.print(f"[bold]++ INFORMATION INFERRED BY THE HEADER ++[/bold]\n")
     console.print(f"[bold]File:[/bold] {args.file}")

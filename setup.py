@@ -27,6 +27,5 @@ setup(
         ],
     },
     packages=find_packages(where='src'),
-    package_dir={'': 'src'},
-    package_data={"refgenDetector": ["msgpacks/*.msgpack"]}
+    package_dir={'': 'src'}
 )
