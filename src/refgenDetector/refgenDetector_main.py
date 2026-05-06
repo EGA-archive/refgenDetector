@@ -76,8 +76,6 @@ def monitor_resources(func):
 def run_main(args):
     """Main logic of the tool (isolated from CLI parsing)."""
     console.print(f"[bold]* Running refgenDetector v.{version} *[/bold]")
-    msgpacks_dir = get_refgen_data() # msgpacks available
-    print(f"Reference files ready at: {msgpacks_dir}")
     console.print(f"---")
     console.print(f"[bold]++ INFORMATION INFERRED BY THE HEADER ++[/bold]\n")
     console.print(f"[bold]File:[/bold] {args.file}")
@@ -87,6 +85,8 @@ def run_main(args):
             process_data_txt(args.file, args.md5, args.assembly)
         elif args.type in ["VCF"]:
             console.print("[bold]File type:[/bold] VCF") 
+            msgpacks_dir = get_refgen_data() # make msgpacks available
+            print(f"Reference files ready at: {msgpacks_dir}")
             open_vcf(args.file, args.matches, args.max_n_var)
         else:
             console.print("[bold]File type:[/bold] BAM/CRAM") 
