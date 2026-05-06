@@ -171,7 +171,9 @@ Depending on how you want to install the package:
 
 1. Clone this repository
 
-2. ``` $ cd PATH_WHERE_YOU_CLONED_THE_REPOSITORY/src/refgenDetector ```
+2.```git clone https://github.com/EGA-archive/refgenDetector.git
+cd refgenDetector
+pip install -e . ```
 
 3. ``$ python3 refgenDetector_main.py -h ``
 
