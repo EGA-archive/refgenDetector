@@ -24,14 +24,12 @@ try:
     from .exceptions.NoFileException import *
     from .aligment_files import *
     from .variant_files import *
-    from .download_data import get_refgen_data
 except ImportError:
     # Works when run directly as a script
     from reference_genome_dictionaries import *
     from exceptions.NoFileException import *
     from aligment_files import *
     from variant_files import *
-    from download_data import get_refgen_data   
 
 console = Console()
 
@@ -85,8 +83,6 @@ def run_main(args):
             process_data_txt(args.file, args.md5, args.assembly)
         elif args.type in ["VCF"]:
             console.print("[bold]File type:[/bold] VCF") 
-            msgpacks_dir = get_refgen_data() # make msgpacks available
-            print(f"Reference files ready at: {msgpacks_dir}")
             open_vcf(args.file, args.matches, args.max_n_var)
         else:
             console.print("[bold]File type:[/bold] BAM/CRAM") 
