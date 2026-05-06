@@ -130,7 +130,7 @@ def run():
         print("[refgenDetector] Reference files already present — skipping setup.")
         return
 
-    print("[refgenDetector] Setting up reference files …")
+    print("[refgenDetector] Setting up reference files - This will only run once")
 
     # Intallation done by clonning the repo - github_msgpacks/ is already present
     if src_clone.exists() and any(src_clone.glob("*.xz")):

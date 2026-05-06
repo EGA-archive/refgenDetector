@@ -5,7 +5,7 @@ from pathlib import Path
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
-VERSION = '3.0.7'
+VERSION = '3.0.4'
 DESCRIPTION = 'RefgenDetector'
 
 
