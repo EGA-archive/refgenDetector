@@ -8,7 +8,7 @@ __maintainer__ = "Mireia Marin Ginestar"
 __email__ = "mireia.marin@crg.eu"
 __status__ = "Developement"
 
-version = "3.0.4"
+version = "3.0.5"
 
 import os
 import sys

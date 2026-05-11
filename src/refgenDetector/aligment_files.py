@@ -124,13 +124,18 @@ def comparison(dict_SN_LN, target_file):
                 for ref in flavors_GRCh37
             ]
             
-            match_flavors = max(matches_flavors, key=lambda x: x[0])
-            if match_flavors: #if some flavor was defined it prints it
-                console.print(f"[bold]Species detected:[/bold] {match_flavors[2]} "
-                f"[bold]\nReference genome version  :[/bold] {match_flavors[1]}")
-            else: #if there wasnt any flavor inferred, the major release it printed
-                console.print(f"[bold]Species detected:[/bold] Homo sapiens \n["
-                              f"bold]Reference genome version  :[/bold] GRCh37")
+            match_flavors = max(matches_flavors, key=lambda x: len(x[0]))
+
+            if len(match_flavors[0]) > 0:
+                console.print(
+                    f"[bold]Species detected:[/bold] {match_flavors[2]} "
+                    f"[bold]\nReference genome version  :[/bold] {match_flavors[1]}"
+                )
+            else:
+                console.print(
+                    "[bold]Species detected:[/bold] Homo sapiens "
+                    "\n[bold]Reference genome version  :[/bold] GRCh37"
+                )
 
         elif max_match[1] == "GRCh38": #checks for GRCh38 flavors
 
@@ -145,9 +150,11 @@ def comparison(dict_SN_LN, target_file):
             else: # if no GRCh38 flavor is inferred, the major release is printed
                 console.print(f"[bold]Species detected:[/bold] Homo sapiens \n["
                               f"bold]Reference genome version  :[/bold] GRCh38")        
-        else: # print the major releases with no considered flavors.
-            console.print(f"[bold]Species detected:[/bold] {match[2]} "
-                  f"\n[bold]Reference genome version:[/bold] {match[1]}")
+        else:  # print the major releases with no considered flavors
+            console.print(
+                f"[bold]Species detected:[/bold] {max_match[2]} "
+                f"\n[bold]Reference genome version:[/bold] {max_match[1]}"
+            )
 
 
 
