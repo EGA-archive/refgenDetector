@@ -57,6 +57,7 @@ def get_paths():
 
 def is_already_setup(dst: Path) -> bool:
     """Return True if at least one .msgpack file exists in dst."""
+    print(dst)
     if not dst.exists():
         return False
     return any(dst.glob("*.msgpack"))

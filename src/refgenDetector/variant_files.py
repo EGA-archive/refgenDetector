@@ -24,6 +24,7 @@ MSGPACK_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "msgpacks
 final_results = []
 console = Console(highlight=False)
 _msgpack_cache = {}
+_current_chr = None
 
 def gather_and_sum(lists):
     """
@@ -54,13 +55,18 @@ def get_matches(snps_dict, chr_):
         A list with the number of matches for each version, which is used to infer the reference genome version.
     """
     
-    global _msgpack_cache
+    global _msgpack_cache, _current_chr
     start = time.time()
 
     genome_versions = ["hg18", "GRCh37", "GRCh38", "T2T"]
     matches = []
 
-    # Extract arrays once
+    # If we've moved on to a different chromosome, drop the previous
+    # chromosome's msgpacks before loading the new ones.
+    if chr_ != _current_chr:
+        _msgpack_cache.clear()
+        _current_chr = chr_
+
     positions = np.array(list(snps_dict.keys()), dtype=np.int64)
     nucleotides = np.array(list(snps_dict.values()))
 
@@ -76,14 +82,13 @@ def get_matches(snps_dict, chr_):
 
         ref_dict = _msgpack_cache[cache_key]
 
-        # Vectorized: look up all positions at once, compare arrays
         ref_nucs = np.array([ref_dict.get(p, None) for p in positions])
         match_count = int(np.sum(ref_nucs == nucleotides))
 
         matches.append([version_name, match_count])
 
-    #console.print("Getting matches. Took:", time.time() - start, "s")
     return matches
+
 
 
 def trimming_indels(content, ref):
