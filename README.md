@@ -193,6 +193,9 @@ unzip /refgenDetector/src/refgenDetector/msgpacks.zip
 
 ## Usage
 
+
+**Bear in mind that the VCF must be sorted for optimal execution.**
+
 You can get the help menu by running:
 
 ```
