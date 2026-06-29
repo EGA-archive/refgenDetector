@@ -154,7 +154,9 @@ To infer the reference genome from a VCF the tool will read the VCF file in chun
 
 The msgpack files were created comparing the nucleotides in each position for hg18, GRCh37, GRCh38 and T2T. Each file contains a list of the positions where each reference had a different nucleotide (distinguishing positions). 
 
-By getting the number of matches between these distinguishing positions and the `REF` present in the VCF we infer the reference genome version used to call the variants. 
+By getting the number of matches between these distinguishing positions and the `REF` present in the VCF we infer the reference genome version used to call the variants.
+
+**Bear in mind** that the input VCF must be sorted to improve runtime performance.
 
 ## Requirements
 
