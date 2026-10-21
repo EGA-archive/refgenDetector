@@ -1,0 +1,45 @@
+# Git metadata
+.git/
+.gitignore
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+
+# Bioinformatics data files
+*.bam
+*.bai
+*.cram
+*.crai
+*.vcf
+*.vcf.gz
+*.gvcf
+*.g.vcf.gz
+*.bcf
+*.bim
+*.bed
+*.fam
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.sam
+
+# Large compressed files
+*.zip
+*.tar
+*.tar.gz
+*.gz
+
+# Local input files
+resources/
+data/
+src/refgenDetector/github_msgpacks
+src/refgenDetector/msgpacks
+src/refgenDetector/pkls
+src/refgenDetector/msgpacks.zip
+

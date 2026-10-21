@@ -1,0 +1,18 @@
+services:
+  refgendetector:
+    build: .
+    image: refgendetector
+    container_name: refgendetector
+
+    volumes:
+      # Input files from your repository
+      - ./data:/data
+
+      # Persistent reference databases
+      - refgen_references:/usr/src/app/src/refgenDetector/msgpacks
+
+    working_dir: /data
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+volumes:
+  refgen_references:

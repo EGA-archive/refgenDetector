@@ -173,15 +173,16 @@ Depending on how you want to install the package:
 
 1. Clone this repository
 
-2.```git clone https://github.com/EGA-archive/refgenDetector.git
+```git clone https://github.com/EGA-archive/refgenDetector.git
 cd refgenDetector
-pip install -e . ```
+pip install -e . 
+```
 
-3. ``$ python3 refgenDetector_main.py -h ``
+2. ``$ python3 refgenDetector_main.py -h ``
 
-4. Download the `msgpack` files for the inference with VCFs: [Download the msgpack reference](https://crgcnag-my.sharepoint.com/:u:/g/personal/mimarin_crg_es/IQDa5CICZDAoRZmbfhBG3ZPEAWdVnNqvefFJB_r5Hc8aM70?e=kID7zn)
+3. Download the `msgpack` files for the inference with VCFs: [Download the msgpack reference](https://crgcnag-my.sharepoint.com/:u:/g/personal/mimarin_crg_es/IQDa5CICZDAoRZmbfhBG3ZPEAWdVnNqvefFJB_r5Hc8aM70?e=kID7zn)
 
-5. Move the `msgpack` to the correct path:
+4. Move the `msgpack` to the correct path:
 
 ```
 mv msgpacks.zip /refgenDetector/src/refgenDetector/
@@ -191,6 +192,85 @@ unzip /refgenDetector/src/refgenDetector/msgpacks.zip
 ### From pypi
 
 ``$ pip install refgenDetector``
+
+The reference files for the VCF inference will be automatically downloaded after the first execution of refgenDetector
+
+### With Docker
+
+refgenDetector can be run using Docker, allowing it to work on Linux, Windows, and macOS without installing Python or other dependencies locally.
+
+#### 1. Requirements
+
+- [Docker](https://www.docker.com/) with Docker Compose installed
+- The refgenDetector repository cloned locally
+
+#### 2. Build and start the container
+
+From the root directory of the repository, run:
+
+```bash
+docker compose up -d --build
+```
+
+This builds the Docker image and starts the container in the background.
+
+For subsequent starts, use:
+
+```bash
+docker compose up -d
+```
+
+#### 3. Add input files
+
+Place the files you want to analyse in the `data/` directory of the repository.
+
+This folder is automatically mounted inside the container, so files can be added or removed without rebuilding it.
+
+#### 4. Run refgenDetector
+
+Execute refgenDetector using:
+
+```bash
+docker compose exec refgendetector refgenDetector -t VCF -f sample.vcf.gz
+```
+
+Replace `sample.vcf.gz` with your input filename.
+
+Supported input types include:
+
+- `VCF` — VCF files
+- `BAM/CRAM` — BAM or CRAM files
+- `Header` — extracted BAM/CRAM headers
+
+For example, to analyse a BAM file:
+
+```bash
+docker compose exec refgendetector refgenDetector -t BAM/CRAM -f sample.bam
+```
+
+To display the available options:
+
+```bash
+docker compose exec refgendetector refgenDetector -h
+```
+
+**Note:** On the first execution requiring reference databases, refgenDetector automatically downloads them. These files are stored in a persistent Docker volume and reused in subsequent executions, including after rebuilding the container.
+
+#### 5. Stop the container
+
+```bash
+docker compose down
+```
+
+This stops and removes the container while preserving the downloaded reference databases.
+
+To start it again:
+
+```bash
+docker compose up -d
+```
+
+**Important:** Avoid using `docker compose down -v`, as this will also remove the persistent volume containing the reference databases.
 
 
 ## Usage
