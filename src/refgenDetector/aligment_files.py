@@ -250,33 +250,36 @@ def get_info_txt(header_txt, md5, assembly):
 
 def process_data_txt(target_file, md5, assembly):
     """
-    First function of the txt module. It opens each header in --path. gzip or uncompressed and encoded in utf-8 or
-    iso-8859-1.
-
-    Args:
-        target_file (str): path to the file
-
-    Returns:
-        header_txt (io.TextIOWrapper): text object
+    Read a BAM/CRAM header from a plain-text or gzip-compressed file.
+    Supports UTF-8 and ISO-8859-1 encodings.
     """
     try:
-        if os.path.isfile(target_file):
-            with open(target_file, "r") as header_txt:
-                get_info_txt(header_txt, md5, assembly)
-        else:
+        if not os.path.isfile(target_file):
             raise NoFileException()
-    except UnicodeError:
-        with open(target_file, "r", encoding="iso-8859-1") as header_txt:
-            get_info_txt(header_txt, md5, assembly)
-    except OSError:
+
+        # Detect gzip from its magic bytes
+        with open(target_file, "rb") as f:
+            is_gzip = f.read(2) == b"\x1f\x8b"
+
+        opener = gzip.open if is_gzip else open
+
         try:
-            with gzip.open(target_file, "rt") as header_txt:
+            with opener(target_file, "rt", encoding="utf-8") as header_txt:
                 get_info_txt(header_txt, md5, assembly)
-        except UnicodeError:
-            with gzip.open(target_file, "rt", encoding="iso-8859-1") as header_txt:
+        except UnicodeDecodeError:
+            with opener(target_file, "rt", encoding="iso-8859-1") as header_txt:
                 get_info_txt(header_txt, md5, assembly)
+
     except NoFileException:
-        console.print(f"[bold]File:[/bold] {target_file} \n[bold][red]Error:[/bold][red] The path provided is not "
-                      f"found or you are using the incorrect --type option.")
+        console.print(
+            f"[bold]File:[/bold] {target_file}\n"
+            "[bold red]Error:[/bold red] File not found."
+        )
+
+    except (OSError, EOFError) as e:
+        console.print(
+            f"[bold red]Error reading file:[/bold red] {e}"
+        )
+
     except Exception as e:
         print("Unexpected error:\n", e)
