@@ -3,5 +3,5 @@ pysam==0.21.0
 psutil==7.2.2
 rich==14.3.2
 pandas==2.3.3
-dnspython==2.8.0
+dnspython==2.9.2
 msgpack==1.1.2
